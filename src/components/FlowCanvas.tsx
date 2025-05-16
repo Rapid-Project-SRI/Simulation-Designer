@@ -1,6 +1,6 @@
 import React, { useEffect, useCallback, useRef, useState } from 'react';
 import { observer } from 'mobx-react-lite';
-import { 
+import {
     ReactFlow,
     MiniMap,
     Background,
@@ -10,7 +10,12 @@ import {
     Node,
     Edge,
     useReactFlow,
-    XYPosition
+    XYPosition,
+    addEdge,
+    reconnectEdge,
+    NodeTypes,
+    EdgeTypes,
+    BackgroundVariant
 } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
 import { flowStore, nodeTypes, DataType } from '../FlowStore';
@@ -24,6 +29,7 @@ const FlowCanvas = observer(() => {
     const canvasRef = useRef<HTMLDivElement>(null);
     const fileInputRef = useRef<HTMLInputElement>(null);
     const [hasFocus, setHasFocus] = useState(false);
+    const edgeReconnectSuccessful = useRef(true);
 
     const rebuildReactFlowState = () => {
         setNodes(
@@ -32,7 +38,7 @@ const FlowCanvas = observer(() => {
                 type: node.type,
                 data: { nodeId: node.id },
                 position: node.position,
-            } as Node))
+            }))
         );
         setEdges(
             flowStore.edges.map((e, i) => ({
@@ -140,7 +146,7 @@ const FlowCanvas = observer(() => {
         if (!nodeType) return;
 
         const bounds = (e.target as HTMLDivElement).getBoundingClientRect();
-        
+
         const position = reactFlowInstance.screenToFlowPosition({
             x: e.clientX - bounds.left - 50,
             y: e.clientY - bounds.top - 20,
@@ -178,6 +184,27 @@ const FlowCanvas = observer(() => {
     const onConnect = useCallback((connection: Connection) => {
         flowStore.addEdge({ source: connection.source!, target: connection.target! });
         flowStore.saveHistory();
+    }, []);
+
+    const onReconnectStart = useCallback(() => {
+        edgeReconnectSuccessful.current = false;
+    }, []);
+
+    const onReconnect = useCallback((oldEdge: Edge, newConnection: Connection) => {
+        edgeReconnectSuccessful.current = true;
+        setEdges((els) => reconnectEdge(oldEdge, newConnection, els));
+    }, []);
+
+    const onReconnectEnd = useCallback((_: any, edge: Edge) => {
+        if (!edgeReconnectSuccessful.current) {
+            setEdges((eds) => eds.filter((e) => e.id !== edge.id));
+            // Also remove from flowStore
+            const source = edge.source;
+            const target = edge.target;
+            flowStore.deleteEdge(source, target);
+            flowStore.saveHistory();
+        }
+        edgeReconnectSuccessful.current = true;
     }, []);
 
     const onNodeDragStop = (e: React.MouseEvent, node: Node) => {
@@ -266,12 +293,15 @@ const FlowCanvas = observer(() => {
                 onEdgesChange={onEdgesChange}
                 onConnect={onConnect}
                 onNodeDragStop={onNodeDragStop}
-                nodeTypes={nodeTypes}
+                nodeTypes={nodeTypes as NodeTypes}
                 selectNodesOnDrag={true}
                 elementsSelectable
                 onSelectionChange={({ nodes }) => {
                     flowStore.setSelectedNodes(nodes.map(n => n.id));
                 }}
+                onReconnect={onReconnect}
+                onReconnectStart={onReconnectStart}
+                onReconnectEnd={onReconnectEnd}
                 fitView
                 panOnScroll={false}
                 proOptions={{ hideAttribution: true }}
@@ -282,7 +312,7 @@ const FlowCanvas = observer(() => {
                 colorMode="light"
             >
                 <MiniMap />
-                <Background variant="dots" gap={12} size={1} />
+                <Background variant={BackgroundVariant.Dots} gap={12} size={1} />
             </ReactFlow>
         </div>
     );
