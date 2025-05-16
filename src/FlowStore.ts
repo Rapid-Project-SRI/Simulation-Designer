@@ -47,6 +47,7 @@ export interface FlowNode {
     pattern?: PatternItem<number>[]; // the pattern is stored as an array of objects
     startTick?: number;
     endTick?: number;
+    repeat?: boolean; // whether to repeat the pattern
 
     //only for Combiner
     mode?: CombineMode;
@@ -161,6 +162,13 @@ export class FlowStore {
         if (node) {
             node.startTick = startTick;
             node.endTick = endTick;
+        }
+    }
+
+    updateNodeRepeat(id: string, repeat: boolean) {
+        const node = this.nodes.find((n) => n.id === id);
+        if (node && node.type === 'dataProducerNode') {
+            node.repeat = repeat;
         }
     }
 
