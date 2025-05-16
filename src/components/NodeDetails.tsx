@@ -70,6 +70,23 @@ const NodeDetails = observer(() => {
     const DetailComponent = nodeMap[node.type][0];
     const showDataType = node.type === 'variableNode' || node.type === 'eventNode' || node.type === 'dataProducerNode';
 
+    const renderOutputVariableField = () => {
+        if (node.type !== 'combinerNode' && node.type !== 'dataProducerNode') return null;
+
+        return (
+            <Box className={classes.section}>
+                <Typography variant="subtitle1">Output Variable Name</Typography>
+                <TextField
+                    value={node.outputVariableName || ''}
+                    onChange={(e) => flowStore.updateNodeOutputVariableName(node.id, e.target.value)}
+                    fullWidth
+                    margin="normal"
+                    placeholder="Enter output variable name..."
+                />
+            </Box>
+        );
+    };
+
     const renderInitialValueInput = () => {
         if (node.type !== 'variableNode') return null;
 
@@ -144,7 +161,7 @@ const NodeDetails = observer(() => {
     return (
         <Box className={classes.root}>
             <Typography variant="h6" className={classes.title}>
-                Node Details
+                {nodeMap[node.type][1]}
             </Typography>
             <Box className={classes.scrollableContent}>
                 <Box className={classes.section}>
@@ -158,22 +175,43 @@ const NodeDetails = observer(() => {
                 </Box>
 
                 <Box className={classes.section}>
-                    <Typography variant="subtitle1">Data Type</Typography>
-                    <Select
-                        value={node.dataType}
-                        onChange={(e) => flowStore.updateNodeDataType(node.id, e.target.value as DataType)}
+                    <Typography variant="subtitle1">Description</Typography>
+                    <TextField
+                        value={node.description || ''}
+                        onChange={(e) => flowStore.updateNodeDescription(node.id, e.target.value)}
                         fullWidth
-                        margin="dense"
-                    >
-                        {Object.values(DataType).map((type) => (
-                            <MenuItem key={type} value={type}>
-                                {type}
-                            </MenuItem>
-                        ))}
-                    </Select>
+                        margin="normal"
+                        multiline
+                        rows={3}
+                        placeholder="Enter node description..."
+                    />
                 </Box>
 
+                {showDataType && (
+                    <Box className={classes.section}>
+                        <Typography variant="subtitle1">Data Type</Typography>
+                        <Select
+                            value={node.dataType}
+                            onChange={(e) => flowStore.updateNodeDataType(node.id, e.target.value as DataType)}
+                            fullWidth
+                            margin="dense"
+                        >
+                            {Object.values(DataType).map((type) => (
+                                <MenuItem key={type} value={type}>
+                                    {type}
+                                </MenuItem>
+                            ))}
+                        </Select>
+                    </Box>
+                )}
+
+                {renderOutputVariableField()}
                 {renderInitialValueInput()}
+
+                {/* Node-specific details */}
+                <Box className={classes.section}>
+                    {DetailComponent && <DetailComponent node={node} />}
+                </Box>
 
                 <Button
                     variant="contained"
