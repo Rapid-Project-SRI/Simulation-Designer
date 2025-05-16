@@ -1,19 +1,23 @@
 import React from 'react'
 import { NodeDetailProps } from './NodeTypes'
 import { observer } from 'mobx-react-lite';
-import { flowStore } from '../FlowStore';
+import { flowStore, DataType } from '../FlowStore';
 import { PatternItem } from './DataProducerNode';
+import { getDefaultValueForType } from '../utils';
 
 const DataProducerDetails: React.FC<NodeDetailProps> = observer(({ node }) => {
     // Add a new row with default values.
     const addRow = () => {
-        const newRow: PatternItem<number> = { data: 0, delayTicks: 0 };
+        const newRow: PatternItem<any> = {
+            data: getDefaultValueForType(node.dataType),
+            delayTicks: 0
+        };
         flowStore.updateNodePattern(node.id, [...node.pattern!, newRow]);
     };
 
     // Update a specific row.
-    const updateRow = (index: number, key: 'data' | 'delayTicks', value: number) => {
-        const newPattern: PatternItem<number>[] = [...node.pattern!];
+    const updateRow = (index: number, key: 'data' | 'delayTicks', value: any) => {
+        const newPattern: PatternItem<any>[] = [...node.pattern!];
         newPattern[index] = { ...newPattern[index], [key]: value }
         flowStore.updateNodePattern(node.id, newPattern);
     };
@@ -24,9 +28,63 @@ const DataProducerDetails: React.FC<NodeDetailProps> = observer(({ node }) => {
         flowStore.updateNodePattern(node.id, newPattern);
     };
 
+    const renderDataInput = (item: PatternItem<any>, index: number) => {
+        switch (node.dataType) {
+            case DataType.NUMBER:
+                return (
+                    <input
+                        type="number"
+                        value={item.data}
+                        onChange={(e) => updateRow(index, 'data', Number(e.target.value))}
+                        placeholder="Data"
+                        style={{ width: 80, marginRight: 5 }}
+                    />
+                );
+            case DataType.STRING:
+                return (
+                    <input
+                        type="text"
+                        value={item.data}
+                        onChange={(e) => updateRow(index, 'data', e.target.value)}
+                        placeholder="Data"
+                        style={{ width: 80, marginRight: 5 }}
+                    />
+                );
+            case DataType.BOOLEAN:
+                return (
+                    <input
+                        type="checkbox"
+                        checked={item.data}
+                        onChange={(e) => updateRow(index, 'data', e.target.checked)}
+                        style={{ marginRight: 5 }}
+                    />
+                );
+            case DataType.OBJECT:
+                return (
+                    <input
+                        type="text"
+                        value={JSON.stringify(item.data)}
+                        onChange={(e) => {
+                            try {
+                                const parsed = JSON.parse(e.target.value);
+                                updateRow(index, 'data', parsed);
+                            } catch (err) {
+                                // Invalid JSON, ignore
+                            }
+                        }}
+                        placeholder="JSON object"
+                        style={{ width: 150, marginRight: 5 }}
+                    />
+                );
+            default:
+                return null;
+        }
+    };
+
     return (
         <>
             <div style={{ marginBottom: 5 }}>Output Variable: {node.variableName}</div>
+            <div style={{ marginBottom: 5 }}>Data Type: {node.dataType}</div>
             {/* Pattern editor */}
             <div style={{ marginTop: 10 }}>
                 <div style={{ marginBottom: 5 }}>
@@ -34,13 +92,7 @@ const DataProducerDetails: React.FC<NodeDetailProps> = observer(({ node }) => {
                 </div>
                 {node.pattern!.map((item, index) => (
                     <div key={index} style={{ display: 'flex', alignItems: 'center', marginBottom: 5 }}>
-                        <input
-                            type="number"
-                            value={item.data}
-                            onChange={(e) => updateRow(index, 'data', Number(e.target.value))}
-                            placeholder="Data"
-                            style={{ width: 80, marginRight: 5 }}
-                        />
+                        {renderDataInput(item, index)}
                         <input
                             type="number"
                             value={item.delayTicks}
@@ -108,4 +160,4 @@ const DataProducerDetails: React.FC<NodeDetailProps> = observer(({ node }) => {
     )
 });
 
-export default DataProducerDetails
+export default DataProducerDetails;

@@ -10,7 +10,7 @@ import ReactFlow, {
     Edge,
     useReactFlow
 } from 'react-flow-renderer';
-import { flowStore, nodeTypes } from '../FlowStore';
+import { flowStore, nodeTypes, DataType } from '../FlowStore';
 import { XYPosition } from '@xyflow/react';
 
 const defaultExpression = "output = input_1 + input_2 - 100";
@@ -143,27 +143,30 @@ const FlowCanvas = observer(() => {
             y: e.clientY - bounds.top - 20,
         });
 
+        // Set default data type to NUMBER for all nodes
+        const defaultDataType = DataType.NUMBER;
+
         switch (nodeType) {
             case 'variableNode':
-                addVariableNode(position);
+                addVariableNode(position, defaultDataType);
                 break;
             case 'transformerNode':
-                addTransformerNode(position);
+                addTransformerNode(position, defaultDataType);
                 break;
             case 'dataProducerNode':
-                addDataProducerNode(position);
+                addDataProducerNode(position, defaultDataType);
                 break;
             case 'combinerNode':
-                addCombinerNode(position);
+                addCombinerNode(position, defaultDataType);
                 break;
             case 'eventNode':
-                addEventNode(position);
+                addEventNode(position, defaultDataType);
                 break;
             case 'outputNode':
-                addOutputNode(position);
+                addOutputNode(position, defaultDataType);
                 break;
             case 'branchNode':
-                addBranchNode(position);
+                addBranchNode(position, defaultDataType);
                 break;
         }
         flowStore.saveHistory();
@@ -179,19 +182,19 @@ const FlowCanvas = observer(() => {
         flowStore.saveHistory();
     };
 
-    const addVariableNode = (position: XYPosition) => {
+    const addVariableNode = (position: XYPosition, dataType: DataType) => {
         const id = flowStore.generateNodeId();
         const variableName = `var_${id}`;
-        flowStore.addNode({ id, type: 'variableNode', label: variableName, variableName, position });
+        flowStore.addNode({ id, type: 'variableNode', label: variableName, variableName, position, dataType });
     };
 
-    const addTransformerNode = (position: XYPosition) => {
+    const addTransformerNode = (position: XYPosition, dataType: DataType) => {
         const id = flowStore.generateNodeId();
         const variableName = `calc_${id}`;
-        flowStore.addNode({ id, type: 'transformerNode', label: variableName, expression: defaultExpression, variableName, position });
+        flowStore.addNode({ id, type: 'transformerNode', label: variableName, expression: defaultExpression, variableName, position, dataType });
     };
 
-    const addDataProducerNode = (position: XYPosition) => {
+    const addDataProducerNode = (position: XYPosition, dataType: DataType) => {
         const id = flowStore.generateNodeId();
         const variableName = `prod_${id}`;
         flowStore.addNode({
@@ -202,32 +205,33 @@ const FlowCanvas = observer(() => {
             pattern: [{ data: 1, delayTicks: 60 }],
             position,
             startTick: 0,
-            endTick: 0
+            endTick: 0,
+            dataType
         });
     };
 
-    const addCombinerNode = (position: XYPosition) => {
+    const addCombinerNode = (position: XYPosition, dataType: DataType) => {
         const id = flowStore.generateNodeId();
         const variableName = `combine_${id}`;
-        flowStore.addNode({ id, type: 'combinerNode', label: variableName, variableName, position, mode: 'merge' });
+        flowStore.addNode({ id, type: 'combinerNode', label: variableName, variableName, position, mode: 'merge', dataType });
     };
 
-    const addEventNode = (position: XYPosition) => {
+    const addEventNode = (position: XYPosition, dataType: DataType) => {
         const id = flowStore.generateNodeId();
         const variableName = `event_${id}`;
-        flowStore.addNode({ id, type: 'eventNode', label: variableName, variableName, position });
+        flowStore.addNode({ id, type: 'eventNode', label: variableName, variableName, position, dataType });
     };
 
-    const addOutputNode = (position: XYPosition) => {
+    const addOutputNode = (position: XYPosition, dataType: DataType) => {
         const id = flowStore.generateNodeId();
         const variableName = `output_${id}`;
-        flowStore.addNode({ id, type: 'outputNode', label: variableName, variableName, position });
+        flowStore.addNode({ id, type: 'outputNode', label: variableName, variableName, position, dataType });
     };
 
-    const addBranchNode = (position: XYPosition) => {
+    const addBranchNode = (position: XYPosition, dataType: DataType) => {
         const id = flowStore.generateNodeId();
         const variableName = `branch_${id}`;
-        flowStore.addNode({ id, type: 'branchNode', label: variableName, variableName, position });
+        flowStore.addNode({ id, type: 'branchNode', label: variableName, variableName, position, dataType });
     };
 
     return (

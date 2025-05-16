@@ -9,11 +9,13 @@ const VariableNode: React.FC<NodeProps> = observer(({ data }) => {
   const nodeData = flowStore.nodes.find((n) => n.id === data.nodeId);
 
   return (
-    <div style={{ padding: 10, background: '#d6eaf8', border: '1px solid #777', borderRadius: 5 }}>
-      <div><strong>Variable Node</strong></div>
-      <Handle type="source" position={Position.Right} />
-      <div style={{ color: '#21618c' }}>{nodeData?.variableName}</div>
-      <div>id: {nodeData?.id}</div>
+    <div style={{ padding: 10, background: '#fdfefe', border: '1px solid #777', borderRadius: 5 }}>
+      <Handle type="target" position={Position.Left} style={{ background: '#555' }} />
+      <Handle type="source" position={Position.Right} style={{ background: '#555' }} />
+      <strong>Variable Node</strong>
+      <div>{nodeData?.label}</div>
+      <div style={{ marginBottom: 5 }}>Output Variable: {nodeData?.variableName}</div>
+      <div style={{ fontSize: '0.8em', color: '#666' }}>Type: {nodeData?.dataType}</div>
     </div>
   );
 });

@@ -18,6 +18,7 @@ const CombinerNode: React.FC<NodeProps> = observer(({ data }) => {
       <div>id: {nodeData?.id}</div>
       <div>Merge Mode: {nodeData?.mode}</div>
       <div style={{ marginBottom: 5 }}>Output Variable: {nodeData?.variableName}</div>
+      <div style={{ fontSize: '0.8em', color: '#666' }}>Type: {nodeData?.dataType}</div>
     </div>
   );
 });

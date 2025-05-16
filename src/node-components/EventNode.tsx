@@ -13,7 +13,7 @@ const EventNode: React.FC<NodeProps> = observer(({ data }) => {
       <div><strong>Event Node</strong></div>
       <Handle type="source" position={Position.Right} />
       <div style={{ color: '#21618c' }}>{nodeData?.label}</div>
-      <div>id: {nodeData?.id}</div>
+      <div style={{ fontSize: '0.8em', color: '#666' }}>Type: {nodeData?.dataType}</div>
     </div>
   );
 });
