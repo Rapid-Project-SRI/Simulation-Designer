@@ -15,6 +15,7 @@ const CombinerNode: React.FC<NodeProps> = observer(({ data }) => {
       <Handle type="source" position={Position.Right} style={{ background: '#555' }} />
       <strong>Combiner Node</strong>
       <div>{nodeData?.label}</div>
+      <div>id: {nodeData?.id}</div>
       <div>Merge Mode: {nodeData?.mode}</div>
       <div style={{ marginBottom: 5 }}>Output Variable: {nodeData?.variableName}</div>
     </div>

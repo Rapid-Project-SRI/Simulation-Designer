@@ -266,7 +266,7 @@ const FlowCanvas = observer(() => {
                     flowStore.setSelectedNodes(nodes.map(n => n.id));
                 }}
                 fitView
-                panOnScroll
+                panOnScroll={false}
             >
                 <MiniMap />
                 <Background />

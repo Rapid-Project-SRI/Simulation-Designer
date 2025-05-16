@@ -25,6 +25,7 @@ const TransformerNode: React.FC<NodeProps> = observer(({ data }) => {
       <strong>Transformer Node</strong>
       <div>{nodeData?.label}</div>
       <div style={{ marginBottom: 5 }}>Output Variable: {nodeData?.variableName}</div>
+      <div>id: {nodeData?.id}</div>
     </div>
   );
 });

@@ -13,6 +13,7 @@ const VariableNode: React.FC<NodeProps> = observer(({ data }) => {
       <div><strong>Variable Node</strong></div>
       <Handle type="source" position={Position.Right} />
       <div style={{ color: '#21618c' }}>{nodeData?.variableName}</div>
+      <div>id: {nodeData?.id}</div>
     </div>
   );
 });
