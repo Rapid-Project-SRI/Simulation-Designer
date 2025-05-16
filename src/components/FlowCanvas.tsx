@@ -237,7 +237,8 @@ const FlowCanvas = observer(() => {
             position,
             dataType,
             expression: defaultExpression,
-            description: ''
+            description: '',
+            outputVariableName: `transformer_${id}`
         });
     };
 
@@ -254,7 +255,7 @@ const FlowCanvas = observer(() => {
             endTick: 100,
             repeat: false,
             description: '',
-            outputVariableName: `output_${id}`
+            outputVariableName: `producer_${id}`
         });
     };
 
@@ -292,7 +293,8 @@ const FlowCanvas = observer(() => {
             label: `Output ${id}`,
             position,
             dataType,
-            description: ''
+            description: '',
+            outputVariableName: `output_${id}`
         });
     };
 
