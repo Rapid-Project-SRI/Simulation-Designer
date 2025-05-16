@@ -3,6 +3,8 @@ import { NodeDetailProps } from './NodeTypes'
 import { observer } from 'mobx-react-lite';
 import { flowStore } from '../FlowStore';
 import { PatternItem } from './DataProducerNode';
+import "./NodeDetails.css";
+
 
 const DataProducerDetails: React.FC<NodeDetailProps> = observer(({ node }) => {
     // Add a new row with default values.
@@ -26,15 +28,13 @@ const DataProducerDetails: React.FC<NodeDetailProps> = observer(({ node }) => {
 
     return (
         <>
-            <div style={{ marginBottom: 5 }}>Output Variable: {node.variableName}</div>
+            <h4 style={{ marginBottom: 4 }}>Output Variable: {node.variableName}</h4>
             {/* Pattern editor */}
-            <div style={{ marginTop: 10 }}>
-                <div style={{ marginBottom: 5 }}>
-                    <strong>Pattern:</strong>
-                </div>
+            <h4 style={{ marginBottom: 4 }}>Pattern: {node.variableName}</h4>
                 {node.pattern!.map((item, index) => (
                     <div key={index} style={{ display: 'flex', alignItems: 'center', marginBottom: 5 }}>
                         <input
+                            className="node-details data-producer"
                             type="number"
                             value={item.data}
                             onChange={(e) => updateRow(index, 'data', Number(e.target.value))}
@@ -42,6 +42,7 @@ const DataProducerDetails: React.FC<NodeDetailProps> = observer(({ node }) => {
                             style={{ width: 80, marginRight: 5 }}
                         />
                         <input
+                            className="node-details data-producer"
                             type="number"
                             value={item.delayTicks}
                             onChange={(e) => updateRow(index, 'delayTicks', Number(e.target.value))}
@@ -53,10 +54,23 @@ const DataProducerDetails: React.FC<NodeDetailProps> = observer(({ node }) => {
                             style={{
                                 backgroundColor: '#e74c3c',
                                 color: 'white',
-                                border: 'none',
+                                border: '2px solid #e74c3c',
                                 borderRadius: 3,
                                 cursor: 'pointer',
                                 padding: '2px 6px',
+                                boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
+                                fontWeight: 'bold',
+                                transition: 'background 0.2s, color 0.2s, border 0.2s'
+                            }}
+                            onMouseOver={e => {
+                                (e.currentTarget as HTMLButtonElement).style.background = 'white';
+                                (e.currentTarget as HTMLButtonElement).style.color = '#e74c3c';
+                                (e.currentTarget as HTMLButtonElement).style.border = '2px solid #e74c3c';
+                            }}
+                            onMouseOut={e => {
+                                (e.currentTarget as HTMLButtonElement).style.background = '#e74c3c';
+                                (e.currentTarget as HTMLButtonElement).style.color = 'white';
+                                (e.currentTarget as HTMLButtonElement).style.border = '2px solid #e74c3c';
                             }}
                             title="Remove row"
                         >
@@ -71,23 +85,35 @@ const DataProducerDetails: React.FC<NodeDetailProps> = observer(({ node }) => {
                         borderRadius: 3,
                         backgroundColor: '#27ae60',
                         color: 'white',
-                        border: 'none',
+                        border: '2px solid #27ae60',
                         cursor: 'pointer',
+                        boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
+                        fontWeight: 'bold',
+                        transition: 'background 0.2s, color 0.2s, border 0.2s'
+                    }}
+                    onMouseOver={e => {
+                        (e.currentTarget as HTMLButtonElement).style.background = 'white';
+                        (e.currentTarget as HTMLButtonElement).style.color = '#27ae60';
+                        (e.currentTarget as HTMLButtonElement).style.border = '2px solid #27ae60';
+                    }}
+                    onMouseOut={e => {
+                        (e.currentTarget as HTMLButtonElement).style.background = '#27ae60';
+                        (e.currentTarget as HTMLButtonElement).style.color = 'white';
+                        (e.currentTarget as HTMLButtonElement).style.border = '2px solid #27ae60';
                     }}
                     title="Add row"
                 >
                     +
                 </button>
-            </div>
+       
 
             {/* Time settings */}
-            <div style={{ marginTop: 10 }}>
-                <div style={{ marginBottom: 5 }}>
-                    <strong>Time Settings:</strong>
-                </div>
+            <h4 style={{ marginBottom: 4 }}>Time Settings</h4>
+              
                 <div style={{ display: 'flex', alignItems: 'center', marginBottom: 5 }}>
                     <label style={{ marginRight: 5 }}>Start Tick:</label>
                     <input
+                        className="node-details data-producer"
                         type="number"
                         value={node.startTick}
                         onChange={(e) => flowStore.updateNodeTime(node.id, Number(e.target.value), node.endTick!)}
@@ -95,15 +121,15 @@ const DataProducerDetails: React.FC<NodeDetailProps> = observer(({ node }) => {
                     />
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center' }}>
-                    <label style={{ marginRight: 5 }}>End Tick:</label>
+                    <label style={{ marginRight: 5, paddingRight: 5 }}>End Tick:</label>
                     <input
+                        className="node-details data-producer"
                         type="number"
                         value={node.endTick}
                         onChange={(e) => flowStore.updateNodeTime(node.id, node.startTick!, Number(e.target.value))}
                         style={{ width: 100 }}
                     />
                 </div>
-            </div>
         </>
     )
 });

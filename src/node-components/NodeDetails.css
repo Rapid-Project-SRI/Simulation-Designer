@@ -1,35 +1,67 @@
-.node-details.variable {
+.node-component.variable {
    background: #E5F2FD;
    color: #1C4DBD;
 }
 
-.node-details.transformer {
+.node-component.transformer {
    background: #EAF7EA;
    color: #358234;
 }
 
-.node-details.data-producer {
+.node-component.data-producer {
    background: #FFF9E5;
    color: #B18761;
 }
 
-.node-details.combiner {
+.node-component.combiner {
    background: #FFF0ED;
    color: #FA7250;
 }
 
-.node-details.event {
+.node-component.event {
    background: #F2EBFD;
    color: #7340F5;
 }
 
-.node-details.output {
+.node-component.output {
    background: #F1F0F6;
    color: #797A96;
 }
 
-.node-details {
+.node-component {
    border-radius: 8px;
    padding: 12px;
    font-weight: bold;
+}
+
+.node-details {
+   margin-bottom: 5px;
+   border: 1px solid #bbb;
+   border-radius: 4px;
+   padding: 8px;
+   box-sizing: border-box;
+}
+
+.node-details.variable {
+   background: #E5F2FD;
+}
+
+.node-details.transformer {
+   background: #EAF7EA;
+}
+
+.node-details.data-producer {
+   background: #FFF9E5;
+}
+
+.node-details.combiner {
+   background: #FFF0ED;
+}
+
+.node-details.event {
+   background: #F2EBFD;
+}
+
+.node-details.output {
+   background: #F1F0F6;
 }

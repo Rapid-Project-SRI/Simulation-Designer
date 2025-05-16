@@ -9,7 +9,7 @@ const CombinerNode: React.FC<NodeProps> = observer(({ data }) => {
   const nodeData: FlowNode = flowStore.nodes.find((n) => n.id === data.nodeId)!;
 
   return (
-    <div className="node-details combiner" style={{ padding: 10, border: '1px solid #777', borderRadius: 5, width: 250 }}>
+    <div className="node-component combiner" style={{ padding: 10, border: '1px solid #777', borderRadius: 5, width: 250 }}>
       {/* Input handle(s) */}
       <Handle type="target" position={Position.Left} style={{ background: '#555' }} />
       {/* Output handle */}

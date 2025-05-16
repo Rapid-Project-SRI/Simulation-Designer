@@ -10,7 +10,7 @@ const EventNode: React.FC<NodeProps> = observer(({ data }) => {
   const nodeData = flowStore.nodes.find((n) => n.id === data.nodeId);
 
   return (
-    <div className="node-details event" style={{ padding: 10, border: '1px solid #777', borderRadius: 5 }}>
+    <div className="node-component event" style={{ padding: 10, border: '1px solid #777', borderRadius: 5 }}>
       <div><strong>Event Node</strong></div>
       <Handle type="source" position={Position.Right} />
       <div>{nodeData?.label}</div>

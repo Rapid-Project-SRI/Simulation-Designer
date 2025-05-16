@@ -10,6 +10,17 @@ import EventDetails from '../node-components/EventDetails'
 import OutputDetails from '../node-components/OutputDetails';
 import BranchDetails from '../node-components/BranchDetails'
 
+// Add this mapping for background colors
+const nodeTypeBgColors: Record<FlowNodeType, string> = {
+    variableNode: '#E5F2FD',
+    transformerNode: '#EAF7EA',
+    dataProducerNode: '#FFF9E5',
+    combinerNode: '#FFF0ED',
+    eventNode: '#F2EBFD',
+    outputNode: '#F1F0F6',
+    branchNode: '#ECECEC'
+};
+
 const nodeMap: Record<FlowNodeType, [React.FC<NodeDetailProps>, string]> = {
     transformerNode: [TransformerDetails, "Transformer Node"],
     variableNode: [VariableDetails, "Variable Node"],
@@ -32,15 +43,34 @@ const NodeDetails: React.FC = observer(() => {
     };
 
     const DetailComponent = nodeMap[selected.type][0];
+    const inputBg = nodeTypeBgColors[selected.type] || '#fff';
 
     return (
         <div style={{ padding: 16, display: 'flex', flexDirection: 'column', height: '100%', background: '#ECECEC' }}>
-            <h2>{nodeMap[selected.type][1]}</h2>
-            <h3>Label: </h3>
+            <h2
+                style={{
+                    backgroundColor: inputBg,
+                    margin: 0,
+                    padding: '12px 8px',
+                    boxShadow: '0 2px 8px rgba(0,0,0,0.07)',
+                    borderRadius: 8
+                }}
+            >
+                {nodeMap[selected.type][1]}
+            </h2>
+            <h4 style={{ marginBottom: 4 }}>Node Label</h4>
             <input
                 value={selected.label}
                 onChange={(e) => flowStore.updateNodeLabel(selected.id, e.target.value)}
-                style={{ width: '100%', marginBottom: 5 }}
+                style={{
+                    width: '100%',
+                    marginBottom: 5,
+                    background: inputBg,
+                    border: '1px solid #bbb',
+                    borderRadius: 4,
+                    padding: 8,
+                    boxSizing: 'border-box'
+                }}
             />
             <div style={{ overflowY: 'auto', maxHeight: 'calc(100vh - 250px)', marginBottom: 16 }}>
                 {DetailComponent && <DetailComponent node={selected} />}
@@ -50,13 +80,25 @@ const NodeDetails: React.FC = observer(() => {
                 onClick={handleDelete}
                 style={{
                     width: '100%',
+                    maxWidth: 120,
                     padding: '10px 0',
-                    background: '#f55',
+                    background: '#DA7D54',
                     color: 'white',
                     fontWeight: 'bold',
-                    border: 'none',
+                    border: '2px solid #DA7D54',
                     borderRadius: 4,
-                    cursor: 'pointer'
+                    cursor: 'pointer',
+                    boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
+                    alignSelf: 'center',
+                    transition: 'background 0.2s, color 0.2s, border 0.2s'
+                }}
+                onMouseOver={e => {
+                    (e.currentTarget as HTMLButtonElement).style.background = 'white';
+                    (e.currentTarget as HTMLButtonElement).style.color = '#DA7D54';
+                }}
+                onMouseOut={e => {
+                    (e.currentTarget as HTMLButtonElement).style.background = '#DA7D54';
+                    (e.currentTarget as HTMLButtonElement).style.color = 'white';
                 }}
             >
                 Delete Node

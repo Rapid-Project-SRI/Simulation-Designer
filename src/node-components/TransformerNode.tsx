@@ -13,7 +13,7 @@ const TransformerNode: React.FC<NodeProps> = observer(({ data }) => {
 
   return (
     <div
-      className="node-details transformer"
+      className="node-component transformer"
       style={{
         padding: 10,
         border: '1px solid #777',
