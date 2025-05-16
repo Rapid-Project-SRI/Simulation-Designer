@@ -302,7 +302,9 @@ const FlowCanvas = observer(() => {
     // };
 
     return (
-        <div
+        <div className='border-2 border-primary border-dashed rounded-app mx-2 p-2 bg-bg-primary'>
+            <h1>Workspace</h1>
+            <div
             ref={canvasRef}
             tabIndex={0}
             onKeyDown={handleKeyDown}
@@ -351,6 +353,7 @@ const FlowCanvas = observer(() => {
                 <MiniMap />
                 <Background variant={BackgroundVariant.Dots} gap={12} size={1} />
             </ReactFlow>
+        </div>
         </div>
     );
 });

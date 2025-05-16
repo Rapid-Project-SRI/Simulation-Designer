@@ -9,24 +9,31 @@ import './Globals.css'
 
 export default function App() {
   return (
-    <ReactFlowProvider>
-      <PanelGroup direction="horizontal" style={{ height: '100vh', width: '100vw' }}>
-        <Panel defaultSize={20} minSize={10}>
-          <SideBar />
-        </Panel>
+    <div className='flex flex-col h-screen'>
+      <div className='bg-white p-2 '>
+      <h1 className="p-2 m-1 bg-bg-primary text-text rounded-app">Data Simulation Framework</h1>
 
-        <PanelResizeHandle style={{ width: '4px', background: '#ccc', cursor: 'col-resize' }} />
+      </div>
+      <ReactFlowProvider>
+        <PanelGroup direction="horizontal" className="bg-white p-2" style={{ height: '100vh', width: '100vw' }}>
+          <Panel className="rounded-app mr-2 flex" defaultSize={40} minSize={25}>
+            <SideBar />
+          </Panel>
 
-        <Panel defaultSize={80} minSize={10}>
-          <FlowCanvas />
-        </Panel>
+          <PanelResizeHandle style={{ width: '4px', background: '#ccc', cursor: 'col-resize' }} />
 
-        <PanelResizeHandle style={{ width: '4px', background: '#ccc', cursor: 'col-resize' }} />
+          <Panel defaultSize={80} minSize={10}>
+            <FlowCanvas />
+          </Panel>
 
-        <Panel defaultSize={40} minSize={10}>
-          <NodeDetails />
-        </Panel>
-      </PanelGroup>
-    </ReactFlowProvider>
+          <PanelResizeHandle style={{ width: '4px', background: '#ccc', cursor: 'col-resize' }} />
+
+          <Panel defaultSize={40} minSize={10}>
+            <NodeDetails />
+          </Panel>
+        </PanelGroup>
+      </ReactFlowProvider>
+    </div>
+
   );
 }

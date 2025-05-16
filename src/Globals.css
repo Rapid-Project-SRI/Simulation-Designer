@@ -1,9 +1,11 @@
 @import url('https://fonts.googleapis.com/css2?family=Hind+Madura:wght@400;500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Sorts+Mill+Goudy:wght@400&display=swap');
 @import "tailwindcss";
 
 @theme {
   /* Font */
   --font-sans: 'Hind Madura', sans-serif;
+  --font-serif: 'Sorts Mill Goudy', serif;
 
   /* Typography */
   --font-h1: 700 24px/1.3 var(--font-sans);
@@ -11,6 +13,7 @@
   --font-h3: 500 16px/1.5 var(--font-sans);
   --font-body: 400 14px/1.6 var(--font-sans);
   --font-body-italic: italic 400 14px/1.6 var(--font-sans);
+  --font-big-letters: 700 48px/1.2 var(--font-serif);
 
   /* Colors */
   --color-text: #081527;
@@ -25,6 +28,7 @@
   --color-node-green-light: #EAF7EA;
   --color-node-green-dark: #358234;
   --color-node-yellow-light: #FFF9E5;
+  --color-node-yellow-dark: #B18761;
   --color-node-orange-light: #FFF0ED;
   --color-node-orange-dark: #FA7250;
   --color-node-purple-light: #F2EBFD;
@@ -73,12 +77,33 @@
     border-bottom-right-radius: 8px;
   }
 
+  .big-letter {
+    font: var(--font-big-letters);
+    color: var(--color-bg-secondary);
+  }
+
   .p-app { padding: 20px; }
 
   .bg-bg { background-color: var(--color-bg);}
   .bg-primary { background-color: var(--color-bg-primary); }
   .bg-secondary { background-color: var(--color-bg-secondary); }
   .bg-error { background-color: var(--color-error); }
+
+  /* Background color classes */
+  .bg-node-blue-light { background-color: var(--color-node-blue-light); }
+  .bg-node-green-light { background-color: var(--color-node-green-light); }
+  .bg-node-yellow-light { background-color: var(--color-node-yellow-light); }
+  .bg-node-orange-light { background-color: var(--color-node-orange-light); }
+  .bg-node-purple-light { background-color: var(--color-node-purple-light); }
+  .bg-node-gray-light { background-color: var(--color-node-gray-light); }
+
+  /* Text color classes */
+  .text-node-blue-dark { color: var(--color-node-blue-dark); }
+  .text-node-green-dark { color: var(--color-node-green-dark); }
+  .text-node-orange-dark { color: var(--color-node-orange-dark); }
+  .text-node-purple-dark { color: var(--color-node-purple-dark); }
+  .text-node-gray-dark { color: var(--color-node-gray-dark); }
+  .text-node-yellow-dark { color: var(--color-node-yellow-dark); }
 }
 
 @layer components {
