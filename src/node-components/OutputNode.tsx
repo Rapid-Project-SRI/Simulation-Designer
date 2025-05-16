@@ -1,5 +1,5 @@
 import React from 'react';
-import { Handle, Position } from 'react-flow-renderer';
+import { Handle, Position } from '@xyflow/react';
 import { observer } from 'mobx-react-lite';
 import { flowStore } from '../FlowStore';
 import { NodeProps } from './NodeTypes';

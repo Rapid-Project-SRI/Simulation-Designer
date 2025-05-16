@@ -1,6 +1,7 @@
 import React, { useEffect, useCallback, useRef, useState } from 'react';
 import { observer } from 'mobx-react-lite';
-import ReactFlow, {
+import { 
+    ReactFlow,
     MiniMap,
     Background,
     useNodesState,
@@ -8,17 +9,18 @@ import ReactFlow, {
     Connection,
     Node,
     Edge,
-    useReactFlow
-} from 'react-flow-renderer';
+    useReactFlow,
+    XYPosition
+} from '@xyflow/react';
+import '@xyflow/react/dist/style.css';
 import { flowStore, nodeTypes, DataType } from '../FlowStore';
-import { XYPosition } from '@xyflow/react';
 
 const defaultExpression = "output = input_1 + input_2 - 100";
 
 const FlowCanvas = observer(() => {
     const [nodes, setNodes, onNodesChange] = useNodesState<Node[]>([]);
     const [edges, setEdges, onEdgesChange] = useEdgesState<Edge[]>([]);
-    const { project } = useReactFlow();
+    const reactFlowInstance = useReactFlow();
     const canvasRef = useRef<HTMLDivElement>(null);
     const fileInputRef = useRef<HTMLInputElement>(null);
     const [hasFocus, setHasFocus] = useState(false);
@@ -138,7 +140,8 @@ const FlowCanvas = observer(() => {
         if (!nodeType) return;
 
         const bounds = (e.target as HTMLDivElement).getBoundingClientRect();
-        const position: XYPosition = project({
+        
+        const position = reactFlowInstance.screenToFlowPosition({
             x: e.clientX - bounds.left - 50,
             y: e.clientY - bounds.top - 20,
         });
@@ -271,9 +274,15 @@ const FlowCanvas = observer(() => {
                 }}
                 fitView
                 panOnScroll={false}
+                proOptions={{ hideAttribution: true }}
+                defaultEdgeOptions={{
+                    animated: true
+                }}
+                connectionRadius={30}
+                colorMode="light"
             >
                 <MiniMap />
-                <Background />
+                <Background variant="dots" gap={12} size={1} />
             </ReactFlow>
         </div>
     );
