@@ -37,7 +37,9 @@ export interface FlowNode {
     label: string;
     position: XYPosition
     dataType: DataType;
+    description: string;
     variableName?: string;
+    outputVariableName?: string;
     selected?: boolean; // for selection
 
     //only for CalcNode
@@ -79,7 +81,13 @@ export class FlowStore {
     }
 
     addNode(node: FlowNode) {
-        this.nodes.push(node);
+        // Ensure description is initialized
+        const nodeWithDescription = {
+            ...node,
+            description: node.description || '', // Set default empty description if not provided
+            outputVariableName: node.outputVariableName || `output_${node.id}` // Set default output variable name
+        };
+        this.nodes.push(nodeWithDescription);
     }
 
     deleteNode(id: string) {
@@ -220,6 +228,20 @@ export class FlowStore {
         console.log(id, "changed to", mode)
         if (node) {
             node.mode = mode;
+        }
+    }
+
+    updateNodeDescription(id: string, description: string) {
+        const node = this.nodes.find((n) => n.id === id);
+        if (node) {
+            node.description = description;
+        }
+    }
+
+    updateNodeOutputVariableName(id: string, name: string) {
+        const node = this.nodes.find((n) => n.id === id);
+        if (node) {
+            node.outputVariableName = name;
         }
     }
 

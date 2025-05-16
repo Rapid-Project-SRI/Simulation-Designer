@@ -223,49 +223,77 @@ const FlowCanvas = observer(() => {
             variableName,
             position,
             dataType,
-            initialValue: getDefaultValueForType(dataType)
+            initialValue: getDefaultValueForType(dataType),
+            description: ''
         });
     };
 
     const addTransformerNode = (position: XYPosition, dataType: DataType) => {
         const id = flowStore.generateNodeId();
-        const variableName = `calc_${id}`;
-        flowStore.addNode({ id, type: 'transformerNode', label: variableName, expression: defaultExpression, variableName, position, dataType });
+        flowStore.addNode({
+            id,
+            type: 'transformerNode',
+            label: `Transformer ${flowStore.getTransformerIndex()}`,
+            position,
+            dataType,
+            expression: defaultExpression,
+            description: ''
+        });
     };
 
     const addDataProducerNode = (position: XYPosition, dataType: DataType) => {
         const id = flowStore.generateNodeId();
-        const variableName = `prod_${id}`;
         flowStore.addNode({
             id,
             type: 'dataProducerNode',
-            label: variableName,
-            variableName,
-            pattern: [{ data: 1, delayTicks: 60 }],
+            label: `Data Producer ${flowStore.getDataProducerIndex()}`,
             position,
-            startTick: 0,
-            endTick: 0,
             dataType,
-            repeat: false
+            pattern: [],
+            startTick: 0,
+            endTick: 100,
+            repeat: false,
+            description: '',
+            outputVariableName: `output_${id}`
         });
     };
 
     const addCombinerNode = (position: XYPosition, dataType: DataType) => {
         const id = flowStore.generateNodeId();
-        const variableName = `combine_${id}`;
-        flowStore.addNode({ id, type: 'combinerNode', label: variableName, variableName, position, mode: 'merge', dataType });
+        flowStore.addNode({
+            id,
+            type: 'combinerNode',
+            label: `Combiner ${flowStore.getCombinerIndex()}`,
+            position,
+            dataType,
+            mode: 'merge',
+            description: '',
+            outputVariableName: `output_${id}`
+        });
     };
 
     const addEventNode = (position: XYPosition, dataType: DataType) => {
         const id = flowStore.generateNodeId();
-        const variableName = `event_${id}`;
-        flowStore.addNode({ id, type: 'eventNode', label: variableName, variableName, position, dataType });
+        flowStore.addNode({
+            id,
+            type: 'eventNode',
+            label: `Event ${id}`,
+            position,
+            dataType,
+            description: ''
+        });
     };
 
     const addOutputNode = (position: XYPosition, dataType: DataType) => {
         const id = flowStore.generateNodeId();
-        const variableName = `output_${id}`;
-        flowStore.addNode({ id, type: 'outputNode', label: variableName, variableName, position, dataType });
+        flowStore.addNode({
+            id,
+            type: 'outputNode',
+            label: `Output ${id}`,
+            position,
+            dataType,
+            description: ''
+        });
     };
 
     const addBranchNode = (position: XYPosition, dataType: DataType) => {
