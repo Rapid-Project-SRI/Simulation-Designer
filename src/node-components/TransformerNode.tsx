@@ -25,7 +25,6 @@ const TransformerNode: React.FC<NodeProps> = observer(({ data }) => {
       <strong>Transformer Node</strong>
       <div>{nodeData?.label}</div>
       <div style={{ marginBottom: 5 }}>Output Variable: {nodeData?.variableName}</div>
-      <div style={{ fontSize: '0.8em', color: '#666' }}>Type: {nodeData?.dataType}</div>
     </div>
   );
 });

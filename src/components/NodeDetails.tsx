@@ -36,6 +36,7 @@ const NodeDetails: React.FC = observer(() => {
     };
 
     const DetailComponent = nodeMap[selected.type][0];
+    const showDataType = selected.type === 'variableNode' || selected.type === 'eventNode' || selected.type === 'dataProducerNode';
 
     return (
         <div style={{ padding: 16, display: 'flex', flexDirection: 'column', height: '100%', width: '100%', boxSizing: 'border-box' }}>
@@ -52,20 +53,22 @@ const NodeDetails: React.FC = observer(() => {
                 />
             </div>
 
-            <div style={{ marginBottom: 16 }}>
-                <div style={{ marginBottom: 8, fontWeight: 'bold' }}>Data Type:</div>
-                <select
-                    style={{ width: '100%', padding: 8, boxSizing: 'border-box' }}
-                    value={selected.dataType}
-                    onChange={(e) => flowStore.updateNodeDataType(selected.id, e.target.value as DataType)}
-                >
-                    {Object.values(DataType).map((type) => (
-                        <option key={type} value={type}>
-                            {type}
-                        </option>
-                    ))}
-                </select>
-            </div>
+            {showDataType && (
+                <div style={{ marginBottom: 16 }}>
+                    <div style={{ marginBottom: 8, fontWeight: 'bold' }}>Data Type:</div>
+                    <select
+                        style={{ width: '100%', padding: 8, boxSizing: 'border-box' }}
+                        value={selected.dataType}
+                        onChange={(e) => flowStore.updateNodeDataType(selected.id, e.target.value as DataType)}
+                    >
+                        {Object.values(DataType).map((type) => (
+                            <option key={type} value={type}>
+                                {type}
+                            </option>
+                        ))}
+                    </select>
+                </div>
+            )}
 
             <div style={{ flex: 1, overflowY: 'auto', marginBottom: 16 }}>
                 {DetailComponent && <DetailComponent node={selected} />}
