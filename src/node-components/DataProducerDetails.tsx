@@ -172,6 +172,17 @@ const DataProducerDetails: React.FC<NodeDetailProps> = observer(({ node }) => {
                     </label>
                 </div>
             </div>
+
+            <div style={{ marginBottom: 10 }}>
+                <label>Default Value:</label>
+                <input
+                    type="text"
+                    value={node.defaultVal || ''}
+                    onChange={(e) => flowStore.updateNodeDefaultValue(node.id, e.target.value)}
+                    style={{ width: '100%', marginBottom: 5 }}
+                    placeholder="Enter default value..."
+                />
+            </div>
         </>
     )
 });

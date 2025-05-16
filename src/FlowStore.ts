@@ -49,6 +49,7 @@ export interface FlowNode {
     startTick?: number;
     endTick?: number;
     repeat?: boolean; // whether to repeat the pattern
+    defaultVal?: any;
 
     //only for VariableNode
     initialValue?: any; // initial value for variable nodes
@@ -234,6 +235,13 @@ export class FlowStore {
         const node = this.nodes.find((n) => n.id === id);
         if (node) {
             node.description = description;
+        }
+    }
+
+    updateNodeDefaultValue(id: string, defaultValue: any) {
+        const node = this.nodes.find((n) => n.id === id);
+        if (node && node.type === 'dataProducerNode') {
+            node.defaultVal = defaultValue;
         }
     }
 
