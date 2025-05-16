@@ -24,8 +24,8 @@ import { getDefaultValueForType } from '../utils';
 const defaultExpression = "output = input_1 + input_2 - 100";
 
 const FlowCanvas = observer(() => {
-    const [nodes, setNodes, onNodesChange] = useNodesState<Node[]>([]);
-    const [edges, setEdges, onEdgesChange] = useEdgesState<Edge[]>([]);
+    const [nodes, setNodes, onNodesChange] = useNodesState<Node>([]);
+    const [edges, setEdges, onEdgesChange] = useEdgesState<Edge>([]);
     const reactFlowInstance = useReactFlow();
     const canvasRef = useRef<HTMLDivElement>(null);
     const fileInputRef = useRef<HTMLInputElement>(null);
@@ -175,9 +175,6 @@ const FlowCanvas = observer(() => {
             case 'outputNode':
                 addOutputNode(position, defaultDataType);
                 break;
-            case 'branchNode':
-                addBranchNode(position, defaultDataType);
-                break;
         }
         flowStore.saveHistory();
     };
@@ -238,7 +235,7 @@ const FlowCanvas = observer(() => {
             dataType,
             expression: defaultExpression,
             description: '',
-            outputVariableName: `transformer_${id}`
+            variableName: `transformer_${id}`
         });
     };
 
@@ -255,7 +252,7 @@ const FlowCanvas = observer(() => {
             endTick: 100,
             repeat: false,
             description: '',
-            outputVariableName: `producer_${id}`
+            variableName: `producer_${id}`
         });
     };
 
@@ -269,7 +266,7 @@ const FlowCanvas = observer(() => {
             dataType,
             mode: 'merge',
             description: '',
-            outputVariableName: `output_${id}`
+            variableName: `output_${id}`
         });
     };
 
@@ -294,15 +291,15 @@ const FlowCanvas = observer(() => {
             position,
             dataType,
             description: '',
-            outputVariableName: `output_${id}`
+            variableName: `output_${id}`
         });
     };
 
-    const addBranchNode = (position: XYPosition, dataType: DataType) => {
-        const id = flowStore.generateNodeId();
-        const variableName = `branch_${id}`;
-        flowStore.addNode({ id, type: 'branchNode', label: variableName, variableName, position, dataType });
-    };
+    // const addBranchNode = (position: XYPosition, dataType: DataType) => {
+    //     const id = flowStore.generateNodeId();
+    //     const variableName = `branch_${id}`;
+    //     flowStore.addNode({ id, type: 'branchNode', label: variableName, variableName, position, dataType });
+    // };
 
     return (
         <div

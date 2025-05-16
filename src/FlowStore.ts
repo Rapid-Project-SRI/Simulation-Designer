@@ -39,7 +39,6 @@ export interface FlowNode {
     dataType: DataType;
     description: string;
     variableName?: string;
-    outputVariableName?: string;
     selected?: boolean; // for selection
 
     //only for CalcNode
@@ -85,7 +84,7 @@ export class FlowStore {
         const nodeWithDescription = {
             ...node,
             description: node.description || '', // Set default empty description if not provided
-            outputVariableName: node.outputVariableName || `output_${node.id}` // Set default output variable name
+            variableName: node.variableName || `output_${node.id}` // Set default output variable name
         };
         this.nodes.push(nodeWithDescription);
     }
@@ -235,13 +234,6 @@ export class FlowStore {
         const node = this.nodes.find((n) => n.id === id);
         if (node) {
             node.description = description;
-        }
-    }
-
-    updateNodeOutputVariableName(id: string, name: string) {
-        const node = this.nodes.find((n) => n.id === id);
-        if (node) {
-            node.outputVariableName = name;
         }
     }
 

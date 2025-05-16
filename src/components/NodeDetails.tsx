@@ -77,8 +77,8 @@ const NodeDetails = observer(() => {
             <Box className={classes.section}>
                 <Typography variant="subtitle1">Output Variable Name</Typography>
                 <TextField
-                    value={node.outputVariableName || ''}
-                    onChange={(e) => flowStore.updateNodeOutputVariableName(node.id, e.target.value)}
+                    value={node.variableName || ''}
+                    onChange={(e) => flowStore.updateNodeVariableName(node.id, e.target.value)}
                     fullWidth
                     margin="normal"
                     placeholder="Enter output variable name..."

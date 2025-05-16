@@ -24,7 +24,8 @@ const TransformerNode: React.FC<NodeProps> = observer(({ data }) => {
       <Handle type="source" position={Position.Right} style={{ background: '#555' }} />
       <strong>Transformer Node</strong>
       <div>{nodeData?.label}</div>
-      <div style={{ marginBottom: 5 }}>Output Variable: {nodeData?.outputVariableName}</div>
+      <div>id: {nodeData?.id}</div>
+      <div style={{ marginBottom: 5 }}>Output Variable: {nodeData?.variableName}</div>
     </div>
   );
 });

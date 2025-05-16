@@ -13,7 +13,8 @@ const OutputNode: React.FC<NodeProps> = observer(({ data }) => {
       <div><strong>Output Node</strong></div>
       <Handle type="target" position={Position.Left} />
       <div style={{ color: '#21618c' }}>{nodeData?.label}</div>
-      <div style={{ fontSize: '0.8em', color: '#666' }}>Output Variable: {nodeData?.outputVariableName}</div>
+      <div>id: {nodeData?.id}</div>
+      <div style={{ fontSize: '0.8em', color: '#666' }}>Output Variable: {nodeData?.variableName}</div>
     </div>
   );
 });
