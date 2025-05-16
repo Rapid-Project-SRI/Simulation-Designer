@@ -99,10 +99,10 @@ export class FlowStore {
         const sourceNode = this.nodes.find(n => n.id === edge.source);
         const targetNode = this.nodes.find(n => n.id === edge.target);
 
-        if (sourceNode && targetNode && sourceNode.dataType !== targetNode.dataType) {
-            console.warn(`Type mismatch: Cannot connect ${sourceNode.dataType} to ${targetNode.dataType}`);
-            return;
-        }
+        // if (sourceNode && targetNode && sourceNode.dataType !== targetNode.dataType) {
+        //     console.warn(`Type mismatch: Cannot connect ${sourceNode.dataType} to ${targetNode.dataType}`);
+        //     return;
+        // }
 
         this.edges.push(edge);
     }
