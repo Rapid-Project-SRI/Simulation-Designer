@@ -10,7 +10,7 @@ function SideBar() {
 
   return (
     <aside style={{ padding: 10, background: '#f7f7f7', height: '100%', borderRight: '1px solid #ddd' }}>
-      <div style={{ marginBottom: 10, fontWeight: 'bold' }}>Nodes</div>
+      <h1 className='bg-blue pb-4'>Library</h1>
       <div
         style={{ marginBottom: 5, padding: 8, background: '#ddd', cursor: 'grab' }}
         onDragStart={(event) => onDragStart(event, 'variableNode')}
