@@ -1,0 +1,39 @@
+.sidebar-node {
+   margin-bottom: 15px;
+   padding: 13px;
+   cursor: grab;
+   border-radius: 8px;
+   box-shadow: 0 2px 6px rgba(21, 101, 192, 0.15);
+   font-weight: bold;
+}
+
+/* Specific node type colors */
+.sidebar-node.variable {
+   background: #E5F2FD;
+   color: #1C4DBD;
+}
+
+.sidebar-node.transformer {
+   background: #EAF7EA;
+   color: #358234;
+}
+
+.sidebar-node.data-producer {
+   background: #FFF9E5;
+   color: #B18761;
+}
+
+.sidebar-node.combiner {
+   background: #FFF0ED;
+   color: #FA7250;
+}
+
+.sidebar-node.event {
+   background: #F2EBFD;
+   color: #7340F5;
+}
+
+.sidebar-node.output {
+   background: #F1F0F6;
+   color: #797A96;
+}

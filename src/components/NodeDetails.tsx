@@ -34,7 +34,7 @@ const NodeDetails: React.FC = observer(() => {
     const DetailComponent = nodeMap[selected.type][0];
 
     return (
-        <div style={{ padding: 16, display: 'flex', flexDirection: 'column', height: '100%' }}>
+        <div style={{ padding: 16, display: 'flex', flexDirection: 'column', height: '100%', background: '#ECECEC' }}>
             <h2>{nodeMap[selected.type][1]}</h2>
             <h3>Label: </h3>
             <input

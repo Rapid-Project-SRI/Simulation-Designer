@@ -1,5 +1,6 @@
 // components/SideBar.tsx
 import React from 'react';
+import './SidebarNode.css';
 
 function SideBar() {
   // When dragging starts, store the node type in the dataTransfer object.
@@ -9,52 +10,52 @@ function SideBar() {
   };
 
   return (
-    <aside style={{ padding: 10, background: '#f7f7f7', height: '100%', borderRight: '1px solid #ddd' }}>
-      <div style={{ marginBottom: 10, fontWeight: 'bold' }}>Nodes</div>
+    <aside style={{ padding: 10, background: '#ECECEC', height: '100%', borderRight: '1px solid #ddd' }}>
+      <h3 style={{ marginBottom: 20, fontWeight: 'bold' }}>Library</h3>
       <div
-        style={{ marginBottom: 5, padding: 8, background: '#ddd', cursor: 'grab' }}
+        className="sidebar-node variable"
         onDragStart={(event) => onDragStart(event, 'variableNode')}
         draggable
       >
         Variable Node
       </div>
       <div
-        style={{ marginBottom: 5, padding: 8, background: '#ddd', cursor: 'grab' }}
+        className="sidebar-node transformer"
         onDragStart={(event) => onDragStart(event, 'transformerNode')}
         draggable
       >
         Transformer Node
       </div>
       <div
-        style={{ marginBottom: 5, padding: 8, background: '#ddd', cursor: 'grab' }}
+        className="sidebar-node data-producer"
         onDragStart={(event) => onDragStart(event, 'dataProducerNode')}
         draggable
       >
         Data Producer Node
       </div>
       <div
-        style={{ marginBottom: 5, padding: 8, background: '#ddd', cursor: 'grab' }}
+        className="sidebar-node combiner"
         onDragStart={(event) => onDragStart(event, 'combinerNode')}
         draggable
       >
         Combiner Node
       </div>
       <div
-        style={{ marginBottom: 5, padding: 8, background: '#ddd', cursor: 'grab' }}
+        className="sidebar-node event"
         onDragStart={(event) => onDragStart(event, 'eventNode')}
         draggable
       >
         Event Node
       </div>
       <div
-        style={{ marginBottom: 5, padding: 8, background: '#ddd', cursor: 'grab' }}
+        className="sidebar-node output"
         onDragStart={(event) => onDragStart(event, 'outputNode')}
         draggable
       >
         Output Node
       </div>
       {/* <div
-        style={{ marginBottom: 5, padding: 8, background: '#ddd', cursor: 'grab' }}
+        className="sidebar-node branch"
         onDragStart={(event) => onDragStart(event, 'branchNode')}
         draggable
       >
