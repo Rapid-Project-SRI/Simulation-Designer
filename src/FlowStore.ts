@@ -14,6 +14,13 @@ export type FlowNodeType =
     'variableNode' | 'transformerNode' | 'dataProducerNode' |
     'combinerNode' | 'eventNode' | 'outputNode' | 'branchNode';
 
+export enum DataType {
+    NUMBER = 'number',
+    STRING = 'string',
+    BOOLEAN = 'boolean',
+    OBJECT = 'object'
+}
+
 export const nodeTypes = {
     variableNode: VariableNode,
     transformerNode: TransformerNode,
@@ -29,9 +36,10 @@ export interface FlowNode {
     type: FlowNodeType;
     label: string;
     position: XYPosition
+    dataType: DataType;
     variableName?: string;
     selected?: boolean; // for selection
-    
+
     //only for CalcNode
     expression?: string;
 
@@ -76,6 +84,14 @@ export class FlowStore {
     }
 
     addEdge(edge: FlowEdge) {
+        const sourceNode = this.nodes.find(n => n.id === edge.source);
+        const targetNode = this.nodes.find(n => n.id === edge.target);
+
+        if (sourceNode && targetNode && sourceNode.dataType !== targetNode.dataType) {
+            console.warn(`Type mismatch: Cannot connect ${sourceNode.dataType} to ${targetNode.dataType}`);
+            return;
+        }
+
         this.edges.push(edge);
     }
 
@@ -105,14 +121,32 @@ export class FlowStore {
         }
     }
 
-    updateNodePattern(id: string, newPattern: PatternItem<number>[]) {
+    updateNodePattern(id: string, newPattern: PatternItem<any>[]) {
         const node = this.nodes.find((n) => n.id === id);
-        console.log("updateNodePattern outsiude if");
         if (node && node.type === 'dataProducerNode') {
-            console.log("updateNodePattern inside if");
+            // Validate that all pattern items match the node's data type
+            const isValid = newPattern.every(item => {
+                switch (node.dataType) {
+                    case DataType.NUMBER:
+                        return typeof item.data === 'number';
+                    case DataType.STRING:
+                        return typeof item.data === 'string';
+                    case DataType.BOOLEAN:
+                        return typeof item.data === 'boolean';
+                    case DataType.OBJECT:
+                        return typeof item.data === 'object' && item.data !== null;
+                    default:
+                        return false;
+                }
+            });
+
+            if (!isValid) {
+                console.warn(`Invalid data type in pattern for node ${id}. Expected ${node.dataType}`);
+                return;
+            }
+
             node.pattern = newPattern;
         }
-        console.log(node?.pattern)
     }
 
     updateNodePosition(id: string, position: XYPosition) {
@@ -143,6 +177,23 @@ export class FlowStore {
         const node = this.nodes.find((n) => n.id === id);
         if (node) {
             node.label = label;
+        }
+    }
+
+    updateNodeDataType(id: string, dataType: DataType) {
+        const node = this.nodes.find((n) => n.id === id);
+        if (node) {
+            node.dataType = dataType;
+            // If it's a data producer node, update the pattern data to match the new type
+            if (node.type === 'dataProducerNode' && node.pattern) {
+                // Import the function directly inside the method to avoid circular dependencies
+                const { getDefaultValueForType } = require('./utils');
+                const newPattern = node.pattern.map(item => ({
+                    ...item,
+                    data: getDefaultValueForType(dataType)
+                }));
+                this.updateNodePattern(id, newPattern);
+            }
         }
     }
 
@@ -204,28 +255,28 @@ export class FlowStore {
     copySelectedNodes() {
         const selectedNodes = this.nodes.filter(node => node.selected);
         const selectedNodeIds = selectedNodes.map(node => node.id);
-    
+
         const selectedEdges = this.edges.filter(edge =>
             selectedNodeIds.includes(edge.source) && selectedNodeIds.includes(edge.target)
         );
-    
+
         this.clipboard = {
             nodes: selectedNodes.map(node => ({ ...node })), // Keep original ID
             edges: selectedEdges.map(edge => ({ ...edge })), // Keep original source/target
         };
-    
+
         console.log("Clipboard after copying:", this.clipboard); // Debug log 
     }
 
     pasteClipboard() {
         if (!this.clipboard || this.clipboard.nodes.length === 0) return;
-    
+
         const nodeIdMap = new Map<string, string>();
-    
+
         const newNodes: FlowNode[] = this.clipboard.nodes.map(original => {
             const newId = this.generateNodeId();
             nodeIdMap.set(original.id, newId);
-    
+
             return {
                 ...original,
                 id: newId,
@@ -237,11 +288,11 @@ export class FlowStore {
                 }
             };
         });
-    
+
         const newEdges: FlowEdge[] = this.clipboard.edges.map(original => {
             const newSource = nodeIdMap.get(original.source);
             const newTarget = nodeIdMap.get(original.target);
-    
+
             if (newSource && newTarget) {
                 return {
                     ...original,
@@ -252,13 +303,13 @@ export class FlowStore {
             }
             return null;
         }).filter(Boolean) as FlowEdge[];
-    
+
         newNodes.forEach(n => this.addNode(n));
         newEdges.forEach(e => this.addEdge(e));
         this.setSelectedNodes(newNodes.map(n => n.id));
         this.saveHistory();
     }
-    
+
     deleteSelectedNodes() {
         const ids = new Set(this.selectedNodeIds);
         this.nodes = this.nodes.filter(n => !ids.has(n.id));

@@ -53,13 +53,6 @@ function SideBar() {
       >
         Output Node
       </div>
-      {/* <div
-        style={{ marginBottom: 5, padding: 8, background: '#ddd', cursor: 'grab' }}
-        onDragStart={(event) => onDragStart(event, 'branchNode')}
-        draggable
-      >
-        Branch Node
-      </div> */}
     </aside>
   );
 }

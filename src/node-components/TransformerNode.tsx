@@ -1,6 +1,6 @@
 import React from 'react'
 import { flowStore } from '../FlowStore';
-import { Handle, Position } from 'react-flow-renderer';
+import { Handle, Position } from '@xyflow/react';
 import { observer } from 'mobx-react-lite';
 import { NodeProps } from './NodeTypes';
 
@@ -25,7 +25,6 @@ const TransformerNode: React.FC<NodeProps> = observer(({ data }) => {
       <strong>Transformer Node</strong>
       <div>{nodeData?.label}</div>
       <div style={{ marginBottom: 5 }}>Output Variable: {nodeData?.variableName}</div>
-      <div>id: {nodeData?.id}</div>
     </div>
   );
 });

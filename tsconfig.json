@@ -9,7 +9,7 @@
     ],
     "allowJs": false,
     "skipLibCheck": true,
-    "esModuleInterop": false,
+    "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "strict": true,
     "forceConsistentCasingInFileNames": true,
@@ -18,11 +18,19 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "react-jsx"
+    "jsx": "react-jsx",
+    "baseUrl": ".",
+    "paths": {
+      "@mui/*": [
+        "./node_modules/@mui/*"
+      ]
+    }
   },
   "include": [
-    "src"
-, "index.jsx", "index.tsx"  ],
+    "src",
+    "index.jsx",
+    "index.tsx"
+  ],
   "references": [
     {
       "path": "./tsconfig.node.json"

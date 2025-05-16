@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { observer } from 'mobx-react-lite';
-import { flowStore, FlowNodeType, FlowNode } from '../FlowStore';
+import { flowStore, FlowNodeType, FlowNode, DataType } from '../FlowStore';
 import TransformerDetails from '../node-components/TransformerDetails';
 import { NodeDetailProps } from '../node-components/NodeTypes';
 import VariableDetails from '../node-components/VariableDetails';
@@ -24,7 +24,11 @@ const NodeDetails: React.FC = observer(() => {
     const selected = flowStore.nodes.find((n) => n.id === flowStore.selectedNodeIds[0]);
 
     if (!selected) {
-        return <div style={{ padding: 16 }}>No node selected</div>;
+        return (
+            <div style={{ padding: 16 }}>
+                <div>No node selected</div>
+            </div>
+        );
     }
 
     const handleDelete = () => {
@@ -32,17 +36,41 @@ const NodeDetails: React.FC = observer(() => {
     };
 
     const DetailComponent = nodeMap[selected.type][0];
+    const showDataType = selected.type === 'variableNode' || selected.type === 'eventNode' || selected.type === 'dataProducerNode';
 
     return (
-        <div style={{ padding: 16, display: 'flex', flexDirection: 'column', height: '100%' }}>
-            <h2>{nodeMap[selected.type][1]}</h2>
-            <h3>Label: </h3>
-            <input
-                value={selected.label}
-                onChange={(e) => flowStore.updateNodeLabel(selected.id, e.target.value)}
-                style={{ width: '100%', marginBottom: 5 }}
-            />
-            <div style={{ overflowY: 'auto', maxHeight: 'calc(100vh - 250px)', marginBottom: 16 }}>
+        <div style={{ padding: 16, display: 'flex', flexDirection: 'column', height: '100%', width: '100%', boxSizing: 'border-box' }}>
+            <div style={{ marginBottom: 16, fontWeight: 'bold' }}>
+                {nodeMap[selected.type][1]}
+            </div>
+
+            <div style={{ marginBottom: 16 }}>
+                <div style={{ marginBottom: 8, fontWeight: 'bold' }}>Label:</div>
+                <input
+                    style={{ width: '100%', padding: 8, boxSizing: 'border-box' }}
+                    value={selected.label}
+                    onChange={(e) => flowStore.updateNodeLabel(selected.id, e.target.value)}
+                />
+            </div>
+
+            {showDataType && (
+                <div style={{ marginBottom: 16 }}>
+                    <div style={{ marginBottom: 8, fontWeight: 'bold' }}>Data Type:</div>
+                    <select
+                        style={{ width: '100%', padding: 8, boxSizing: 'border-box' }}
+                        value={selected.dataType}
+                        onChange={(e) => flowStore.updateNodeDataType(selected.id, e.target.value as DataType)}
+                    >
+                        {Object.values(DataType).map((type) => (
+                            <option key={type} value={type}>
+                                {type}
+                            </option>
+                        ))}
+                    </select>
+                </div>
+            )}
+
+            <div style={{ flex: 1, overflowY: 'auto', marginBottom: 16 }}>
                 {DetailComponent && <DetailComponent node={selected} />}
             </div>
 
@@ -51,13 +79,15 @@ const NodeDetails: React.FC = observer(() => {
                 style={{
                     width: '100%',
                     padding: '10px 0',
-                    background: '#f55',
+                    backgroundColor: '#f55',
                     color: 'white',
                     fontWeight: 'bold',
                     border: 'none',
                     borderRadius: 4,
-                    cursor: 'pointer'
+                    cursor: 'pointer',
                 }}
+                onMouseOver={(e) => e.currentTarget.style.backgroundColor = '#f33'}
+                onMouseOut={(e) => e.currentTarget.style.backgroundColor = '#f55'}
             >
                 Delete Node
             </button>

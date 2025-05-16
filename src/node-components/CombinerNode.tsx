@@ -1,5 +1,5 @@
 import React from 'react';
-import { Handle, Position } from 'react-flow-renderer';
+import { Handle, Position } from '@xyflow/react';
 import { observer } from 'mobx-react-lite';
 import { flowStore, FlowNode } from '../FlowStore'
 import { NodeProps } from './NodeTypes';
@@ -18,6 +18,7 @@ const CombinerNode: React.FC<NodeProps> = observer(({ data }) => {
       <div>id: {nodeData?.id}</div>
       <div>Merge Mode: {nodeData?.mode}</div>
       <div style={{ marginBottom: 5 }}>Output Variable: {nodeData?.variableName}</div>
+      {/* <div style={{ fontSize: '0.8em', color: '#666' }}>Type: {nodeData?.dataType}</div> */}
     </div>
   );
 });

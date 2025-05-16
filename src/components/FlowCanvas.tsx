@@ -1,6 +1,7 @@
 import React, { useEffect, useCallback, useRef, useState } from 'react';
 import { observer } from 'mobx-react-lite';
-import ReactFlow, {
+import {
+    ReactFlow,
     MiniMap,
     Background,
     useNodesState,
@@ -8,20 +9,27 @@ import ReactFlow, {
     Connection,
     Node,
     Edge,
-    useReactFlow
-} from 'react-flow-renderer';
-import { flowStore, nodeTypes } from '../FlowStore';
-import { XYPosition } from '@xyflow/react';
+    useReactFlow,
+    XYPosition,
+    addEdge,
+    reconnectEdge,
+    NodeTypes,
+    EdgeTypes,
+    BackgroundVariant
+} from '@xyflow/react';
+import '@xyflow/react/dist/style.css';
+import { flowStore, nodeTypes, DataType } from '../FlowStore';
 
 const defaultExpression = "output = input_1 + input_2 - 100";
 
 const FlowCanvas = observer(() => {
     const [nodes, setNodes, onNodesChange] = useNodesState<Node[]>([]);
     const [edges, setEdges, onEdgesChange] = useEdgesState<Edge[]>([]);
-    const { project } = useReactFlow();
+    const reactFlowInstance = useReactFlow();
     const canvasRef = useRef<HTMLDivElement>(null);
     const fileInputRef = useRef<HTMLInputElement>(null);
     const [hasFocus, setHasFocus] = useState(false);
+    const edgeReconnectSuccessful = useRef(true);
 
     const rebuildReactFlowState = () => {
         setNodes(
@@ -30,7 +38,7 @@ const FlowCanvas = observer(() => {
                 type: node.type,
                 data: { nodeId: node.id },
                 position: node.position,
-            } as Node))
+            }))
         );
         setEdges(
             flowStore.edges.map((e, i) => ({
@@ -138,32 +146,36 @@ const FlowCanvas = observer(() => {
         if (!nodeType) return;
 
         const bounds = (e.target as HTMLDivElement).getBoundingClientRect();
-        const position: XYPosition = project({
+
+        const position = reactFlowInstance.screenToFlowPosition({
             x: e.clientX - bounds.left - 50,
             y: e.clientY - bounds.top - 20,
         });
 
+        // Set default data type to NUMBER for all nodes
+        const defaultDataType = DataType.NUMBER;
+
         switch (nodeType) {
             case 'variableNode':
-                addVariableNode(position);
+                addVariableNode(position, defaultDataType);
                 break;
             case 'transformerNode':
-                addTransformerNode(position);
+                addTransformerNode(position, defaultDataType);
                 break;
             case 'dataProducerNode':
-                addDataProducerNode(position);
+                addDataProducerNode(position, defaultDataType);
                 break;
             case 'combinerNode':
-                addCombinerNode(position);
+                addCombinerNode(position, defaultDataType);
                 break;
             case 'eventNode':
-                addEventNode(position);
+                addEventNode(position, defaultDataType);
                 break;
             case 'outputNode':
-                addOutputNode(position);
+                addOutputNode(position, defaultDataType);
                 break;
             case 'branchNode':
-                addBranchNode(position);
+                addBranchNode(position, defaultDataType);
                 break;
         }
         flowStore.saveHistory();
@@ -174,24 +186,45 @@ const FlowCanvas = observer(() => {
         flowStore.saveHistory();
     }, []);
 
+    const onReconnectStart = useCallback(() => {
+        edgeReconnectSuccessful.current = false;
+    }, []);
+
+    const onReconnect = useCallback((oldEdge: Edge, newConnection: Connection) => {
+        edgeReconnectSuccessful.current = true;
+        setEdges((els) => reconnectEdge(oldEdge, newConnection, els));
+    }, []);
+
+    const onReconnectEnd = useCallback((_: any, edge: Edge) => {
+        if (!edgeReconnectSuccessful.current) {
+            setEdges((eds) => eds.filter((e) => e.id !== edge.id));
+            // Also remove from flowStore
+            const source = edge.source;
+            const target = edge.target;
+            flowStore.deleteEdge(source, target);
+            flowStore.saveHistory();
+        }
+        edgeReconnectSuccessful.current = true;
+    }, []);
+
     const onNodeDragStop = (e: React.MouseEvent, node: Node) => {
         flowStore.updateNodePosition(node.id, node.position);
         flowStore.saveHistory();
     };
 
-    const addVariableNode = (position: XYPosition) => {
+    const addVariableNode = (position: XYPosition, dataType: DataType) => {
         const id = flowStore.generateNodeId();
         const variableName = `var_${id}`;
-        flowStore.addNode({ id, type: 'variableNode', label: variableName, variableName, position });
+        flowStore.addNode({ id, type: 'variableNode', label: variableName, variableName, position, dataType });
     };
 
-    const addTransformerNode = (position: XYPosition) => {
+    const addTransformerNode = (position: XYPosition, dataType: DataType) => {
         const id = flowStore.generateNodeId();
         const variableName = `calc_${id}`;
-        flowStore.addNode({ id, type: 'transformerNode', label: variableName, expression: defaultExpression, variableName, position });
+        flowStore.addNode({ id, type: 'transformerNode', label: variableName, expression: defaultExpression, variableName, position, dataType });
     };
 
-    const addDataProducerNode = (position: XYPosition) => {
+    const addDataProducerNode = (position: XYPosition, dataType: DataType) => {
         const id = flowStore.generateNodeId();
         const variableName = `prod_${id}`;
         flowStore.addNode({
@@ -202,32 +235,33 @@ const FlowCanvas = observer(() => {
             pattern: [{ data: 1, delayTicks: 60 }],
             position,
             startTick: 0,
-            endTick: 0
+            endTick: 0,
+            dataType
         });
     };
 
-    const addCombinerNode = (position: XYPosition) => {
+    const addCombinerNode = (position: XYPosition, dataType: DataType) => {
         const id = flowStore.generateNodeId();
         const variableName = `combine_${id}`;
-        flowStore.addNode({ id, type: 'combinerNode', label: variableName, variableName, position, mode: 'merge' });
+        flowStore.addNode({ id, type: 'combinerNode', label: variableName, variableName, position, mode: 'merge', dataType });
     };
 
-    const addEventNode = (position: XYPosition) => {
+    const addEventNode = (position: XYPosition, dataType: DataType) => {
         const id = flowStore.generateNodeId();
         const variableName = `event_${id}`;
-        flowStore.addNode({ id, type: 'eventNode', label: variableName, variableName, position });
+        flowStore.addNode({ id, type: 'eventNode', label: variableName, variableName, position, dataType });
     };
 
-    const addOutputNode = (position: XYPosition) => {
+    const addOutputNode = (position: XYPosition, dataType: DataType) => {
         const id = flowStore.generateNodeId();
         const variableName = `output_${id}`;
-        flowStore.addNode({ id, type: 'outputNode', label: variableName, variableName, position });
+        flowStore.addNode({ id, type: 'outputNode', label: variableName, variableName, position, dataType });
     };
 
-    const addBranchNode = (position: XYPosition) => {
+    const addBranchNode = (position: XYPosition, dataType: DataType) => {
         const id = flowStore.generateNodeId();
         const variableName = `branch_${id}`;
-        flowStore.addNode({ id, type: 'branchNode', label: variableName, variableName, position });
+        flowStore.addNode({ id, type: 'branchNode', label: variableName, variableName, position, dataType });
     };
 
     return (
@@ -259,17 +293,26 @@ const FlowCanvas = observer(() => {
                 onEdgesChange={onEdgesChange}
                 onConnect={onConnect}
                 onNodeDragStop={onNodeDragStop}
-                nodeTypes={nodeTypes}
+                nodeTypes={nodeTypes as NodeTypes}
                 selectNodesOnDrag={true}
                 elementsSelectable
                 onSelectionChange={({ nodes }) => {
                     flowStore.setSelectedNodes(nodes.map(n => n.id));
                 }}
+                onReconnect={onReconnect}
+                onReconnectStart={onReconnectStart}
+                onReconnectEnd={onReconnectEnd}
                 fitView
                 panOnScroll={false}
+                proOptions={{ hideAttribution: true }}
+                defaultEdgeOptions={{
+                    animated: true
+                }}
+                connectionRadius={30}
+                colorMode="light"
             >
                 <MiniMap />
-                <Background />
+                <Background variant={BackgroundVariant.Dots} gap={12} size={1} />
             </ReactFlow>
         </div>
     );

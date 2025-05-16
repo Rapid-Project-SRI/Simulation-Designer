@@ -1,6 +1,6 @@
 import React from 'react';
-import { ReactFlowProvider } from 'react-flow-renderer';
-import 'react-flow-renderer/dist/style.css';
+import { ReactFlowProvider } from '@xyflow/react';
+// We already import the CSS in FlowCanvas
 import FlowCanvas from './components/FlowCanvas';
 import SideBar from './components/Sidebar';
 import { PanelGroup, Panel, PanelResizeHandle } from 'react-resizable-panels';
