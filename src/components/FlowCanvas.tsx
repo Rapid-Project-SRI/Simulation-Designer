@@ -19,6 +19,7 @@ import {
 } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
 import { flowStore, nodeTypes, DataType } from '../FlowStore';
+import { getDefaultValueForType } from '../utils';
 
 const defaultExpression = "output = input_1 + input_2 - 100";
 
@@ -215,7 +216,15 @@ const FlowCanvas = observer(() => {
     const addVariableNode = (position: XYPosition, dataType: DataType) => {
         const id = flowStore.generateNodeId();
         const variableName = `var_${id}`;
-        flowStore.addNode({ id, type: 'variableNode', label: variableName, variableName, position, dataType });
+        flowStore.addNode({
+            id,
+            type: 'variableNode',
+            label: variableName,
+            variableName,
+            position,
+            dataType,
+            initialValue: getDefaultValueForType(dataType)
+        });
     };
 
     const addTransformerNode = (position: XYPosition, dataType: DataType) => {

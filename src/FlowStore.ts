@@ -49,6 +49,9 @@ export interface FlowNode {
     endTick?: number;
     repeat?: boolean; // whether to repeat the pattern
 
+    //only for VariableNode
+    initialValue?: any; // initial value for variable nodes
+
     //only for Combiner
     mode?: CombineMode;
 }
@@ -178,6 +181,13 @@ export class FlowStore {
         if (node) {
             node.variableName = name;
             console.log("node var name udpated and exists")
+        }
+    }
+
+    updateNodeInitialValue(id: string, value: any) {
+        const node = this.nodes.find((n) => n.id === id);
+        if (node && node.type === 'variableNode') {
+            node.initialValue = value;
         }
     }
 
