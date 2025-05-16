@@ -133,27 +133,37 @@ const DataProducerDetails: React.FC<NodeDetailProps> = observer(({ node }) => {
             </div>
 
             {/* Time settings */}
-            <div style={{ marginTop: 10 }}>
-                <div style={{ marginBottom: 5 }}>
-                    <strong>Time Settings:</strong>
+            <div style={{ marginBottom: 10 }}>
+                <div style={{ marginBottom: 5, fontWeight: 'bold' }}>Time Settings</div>
+                <div style={{ display: 'flex', gap: 10, marginBottom: 5 }}>
+                    <div>
+                        <label>Start Tick:</label>
+                        <input
+                            type="number"
+                            value={node.startTick || 0}
+                            onChange={(e) => flowStore.updateNodeTime(node.id, Number(e.target.value), node.endTick || 0)}
+                            style={{ width: '60px', marginLeft: 5 }}
+                        />
+                    </div>
+                    <div>
+                        <label>End Tick:</label>
+                        <input
+                            type="number"
+                            value={node.endTick || 0}
+                            onChange={(e) => flowStore.updateNodeTime(node.id, node.startTick || 0, Number(e.target.value))}
+                            style={{ width: '60px', marginLeft: 5 }}
+                        />
+                    </div>
                 </div>
-                <div style={{ display: 'flex', alignItems: 'center', marginBottom: 5 }}>
-                    <label style={{ marginRight: 5 }}>Start Tick:</label>
-                    <input
-                        type="number"
-                        value={node.startTick}
-                        onChange={(e) => flowStore.updateNodeTime(node.id, Number(e.target.value), node.endTick!)}
-                        style={{ width: 100 }}
-                    />
-                </div>
-                <div style={{ display: 'flex', alignItems: 'center' }}>
-                    <label style={{ marginRight: 5 }}>End Tick:</label>
-                    <input
-                        type="number"
-                        value={node.endTick}
-                        onChange={(e) => flowStore.updateNodeTime(node.id, node.startTick!, Number(e.target.value))}
-                        style={{ width: 100 }}
-                    />
+                <div style={{ marginTop: 5 }}>
+                    <label>
+                        <input
+                            type="checkbox"
+                            checked={node.repeat || false}
+                            onChange={(e) => flowStore.updateNodeRepeat(node.id, e.target.checked)}
+                        />
+                        Repeat Pattern
+                    </label>
                 </div>
             </div>
         </>

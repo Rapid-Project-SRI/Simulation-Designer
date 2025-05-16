@@ -236,7 +236,8 @@ const FlowCanvas = observer(() => {
             position,
             startTick: 0,
             endTick: 0,
-            dataType
+            dataType,
+            repeat: false
         });
     };
 
