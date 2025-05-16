@@ -3,6 +3,7 @@ import React, { useEffect, useCallback, useRef } from 'react';
 import { Handle, Position } from 'react-flow-renderer';
 import { flowStore, FlowNode } from '../FlowStore';
 import { NodeProps } from './NodeTypes';
+import "./NodeDetails.css";
 
 export interface PatternItem<T> {
     data: T;
@@ -13,7 +14,7 @@ const DataProducerNode: React.FC<NodeProps> = observer(({ data }) => {
     const nodeData: FlowNode = flowStore.nodes.find((n) => n.id === data.nodeId)!;
 
     return (
-        <div style={{ padding: 10, background: '#f0f0f0', border: '1px solid #ddd', borderRadius: 5 }}>
+        <div className="node-details data-producer" style={{ padding: 10, border: '1px solid #777', borderRadius: 5 }}>
             <div><strong>Data Producer Node</strong></div>
             {/* Input handle for marking as Event-Activated */}
             <Handle type="target" position={Position.Left} style={{ background: '#555' }} />

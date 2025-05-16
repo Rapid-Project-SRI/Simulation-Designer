@@ -3,12 +3,13 @@ import { Handle, Position } from 'react-flow-renderer';
 import { observer } from 'mobx-react-lite';
 import { flowStore, FlowNode } from '../FlowStore'
 import { NodeProps } from './NodeTypes';
+import "./NodeDetails.css";
 
 const CombinerNode: React.FC<NodeProps> = observer(({ data }) => {
   const nodeData: FlowNode = flowStore.nodes.find((n) => n.id === data.nodeId)!;
 
   return (
-    <div style={{ padding: 10, background: '#e8f5e9', border: '1px solid #777', borderRadius: 5, width: 250 }}>
+    <div className="node-details combiner" style={{ padding: 10, border: '1px solid #777', borderRadius: 5, width: 250 }}>
       {/* Input handle(s) */}
       <Handle type="target" position={Position.Left} style={{ background: '#555' }} />
       {/* Output handle */}

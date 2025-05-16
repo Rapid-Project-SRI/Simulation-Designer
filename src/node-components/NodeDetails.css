@@ -1,0 +1,35 @@
+.node-details.variable {
+   background: #E5F2FD;
+   color: #1C4DBD;
+}
+
+.node-details.transformer {
+   background: #EAF7EA;
+   color: #358234;
+}
+
+.node-details.data-producer {
+   background: #FFF9E5;
+   color: #B18761;
+}
+
+.node-details.combiner {
+   background: #FFF0ED;
+   color: #FA7250;
+}
+
+.node-details.event {
+   background: #F2EBFD;
+   color: #7340F5;
+}
+
+.node-details.output {
+   background: #F1F0F6;
+   color: #797A96;
+}
+
+.node-details {
+   border-radius: 8px;
+   padding: 12px;
+   font-weight: bold;
+}

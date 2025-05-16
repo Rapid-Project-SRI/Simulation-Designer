@@ -3,6 +3,7 @@ import { flowStore } from '../FlowStore';
 import { Handle, Position } from 'react-flow-renderer';
 import { observer } from 'mobx-react-lite';
 import { NodeProps } from './NodeTypes';
+import "./NodeDetails.css";
 
 const TransformerNode: React.FC<NodeProps> = observer(({ data }) => {
   // Retrieve the saved expression from your store.
@@ -12,9 +13,9 @@ const TransformerNode: React.FC<NodeProps> = observer(({ data }) => {
 
   return (
     <div
+      className="node-details transformer"
       style={{
         padding: 10,
-        background: '#fdfefe',
         border: '1px solid #777',
         borderRadius: 5,
         width: 250,
