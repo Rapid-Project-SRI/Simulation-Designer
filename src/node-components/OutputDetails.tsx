@@ -6,6 +6,13 @@ import { NodeDetailProps } from './NodeTypes'
 const OutputDetails: React.FC<NodeDetailProps> = observer(({ node }) => {
     return (
         <>
+            <div style={{ marginBottom: 5 }}>Output Variable: {node.outputVariableName}</div>
+            <input
+                value={node.outputVariableName || ''}
+                onChange={(e) => flowStore.updateNodeOutputVariableName(node.id, e.target.value)}
+                style={{ width: '100%', marginBottom: 5 }}
+                placeholder="Enter output variable name..."
+            />
         </>
     )
 });

@@ -23,7 +23,7 @@ const DataProducerNode: React.FC<NodeProps> = observer(({ data }) => {
             <Handle type="source" position={Position.Right} style={{ background: '#555' }} />
             <div style={{ color: '#21618c' }}>{nodeData?.label}</div>
             <div style={{ fontSize: '0.8em', color: '#666' }}>Type: {nodeData?.dataType}</div>
-            <div style={{ fontSize: '0.8em', color: '#666' }}>Variable: {nodeData?.variableName}</div>
+            <div style={{ fontSize: '0.8em', color: '#666' }}>Output Variable: {nodeData?.outputVariableName}</div>
         </div>
     );
 });
