@@ -9,6 +9,8 @@ import CombinerDetails from '../node-components/CombinerDetails';
 import EventDetails from '../node-components/EventDetails'
 import OutputDetails from '../node-components/OutputDetails';
 import BranchDetails from '../node-components/BranchDetails'
+import { Box, Typography, TextField, Select, MenuItem, Button } from '@mui/material';
+import { makeStyles } from '@mui/styles';
 
 const nodeMap: Record<FlowNodeType, [React.FC<NodeDetailProps>, string]> = {
     transformerNode: [TransformerDetails, "Transformer Node"],
@@ -20,78 +22,169 @@ const nodeMap: Record<FlowNodeType, [React.FC<NodeDetailProps>, string]> = {
     branchNode: [BranchDetails, "Branch Node"]
 }
 
-const NodeDetails: React.FC = observer(() => {
-    const selected = flowStore.nodes.find((n) => n.id === flowStore.selectedNodeIds[0]);
+const useStyles = makeStyles({
+    root: {
+        width: '100%',
+        boxSizing: 'border-box',
+        padding: '16px',
+        display: 'flex',
+        flexDirection: 'column',
+        height: '100%',
+    },
+    title: {
+        marginBottom: '16px',
+    },
+    section: {
+        marginBottom: '16px',
+    },
+    scrollableContent: {
+        flex: 1,
+        overflowY: 'auto',
+    },
+    deleteButton: {
+        marginTop: '16px',
+    },
+    input: {
+        width: '100%',
+        marginBottom: '8px',
+    },
+    select: {
+        width: '100%',
+        marginBottom: '8px',
+    },
+});
 
-    if (!selected) {
-        return (
-            <div style={{ padding: 16 }}>
-                <div>No node selected</div>
-            </div>
-        );
+const NodeDetails = observer(() => {
+    const classes = useStyles();
+    const selectedNodeId = flowStore.selectedNodeIds[0];
+    const node = flowStore.nodes.find((n) => n.id === selectedNodeId);
+
+    if (!node) {
+        return null;
     }
 
     const handleDelete = () => {
-        flowStore.deleteNode(selected.id);
+        flowStore.deleteNode(node.id);
     };
 
-    const DetailComponent = nodeMap[selected.type][0];
-    const showDataType = selected.type === 'variableNode' || selected.type === 'eventNode' || selected.type === 'dataProducerNode';
+    const DetailComponent = nodeMap[node.type][0];
+    const showDataType = node.type === 'variableNode' || node.type === 'eventNode' || node.type === 'dataProducerNode';
+
+    const renderInitialValueInput = () => {
+        if (node.type !== 'variableNode') return null;
+
+        switch (node.dataType) {
+            case DataType.NUMBER:
+                return (
+                    <TextField
+                        type="number"
+                        label="Initial Value"
+                        value={node.initialValue || 0}
+                        onChange={(e) => flowStore.updateNodeInitialValue(node.id, Number(e.target.value))}
+                        fullWidth
+                        margin="normal"
+                    />
+                );
+            case DataType.STRING:
+                return (
+                    <TextField
+                        type="text"
+                        label="Initial Value"
+                        value={node.initialValue || ''}
+                        onChange={(e) => flowStore.updateNodeInitialValue(node.id, e.target.value)}
+                        fullWidth
+                        margin="normal"
+                    />
+                );
+            case DataType.BOOLEAN:
+                return (
+                    <Box sx={{ display: 'flex', alignItems: 'center', mt: 2, mb: 2 }}>
+                        <Typography sx={{ mr: 2 }}>Initial Value:</Typography>
+                        <input
+                            type="checkbox"
+                            checked={node.initialValue || false}
+                            onChange={(e) => flowStore.updateNodeInitialValue(node.id, e.target.checked)}
+                        />
+                    </Box>
+                );
+            case DataType.OBJECT:
+                return (
+                    <TextField
+                        type="text"
+                        label="Initial Value (JSON)"
+                        value={JSON.stringify(node.initialValue || {})}
+                        onChange={(e) => {
+                            try {
+                                const parsed = JSON.parse(e.target.value);
+                                flowStore.updateNodeInitialValue(node.id, parsed);
+                            } catch (err) {
+                                // Invalid JSON, ignore
+                            }
+                        }}
+                        fullWidth
+                        margin="normal"
+                        error={!isValidJSON(node.initialValue)}
+                        helperText={!isValidJSON(node.initialValue) ? "Invalid JSON" : ""}
+                    />
+                );
+            default:
+                return null;
+        }
+    };
+
+    const isValidJSON = (value: any) => {
+        try {
+            JSON.stringify(value);
+            return true;
+        } catch (e) {
+            return false;
+        }
+    };
 
     return (
-        <div style={{ padding: 16, display: 'flex', flexDirection: 'column', height: '100%', width: '100%', boxSizing: 'border-box' }}>
-            <div style={{ marginBottom: 16, fontWeight: 'bold' }}>
-                {nodeMap[selected.type][1]}
-            </div>
+        <Box className={classes.root}>
+            <Typography variant="h6" className={classes.title}>
+                Node Details
+            </Typography>
+            <Box className={classes.scrollableContent}>
+                <Box className={classes.section}>
+                    <Typography variant="subtitle1">Label</Typography>
+                    <TextField
+                        value={node.label}
+                        onChange={(e) => flowStore.updateNodeLabel(node.id, e.target.value)}
+                        fullWidth
+                        margin="normal"
+                    />
+                </Box>
 
-            <div style={{ marginBottom: 16 }}>
-                <div style={{ marginBottom: 8, fontWeight: 'bold' }}>Label:</div>
-                <input
-                    style={{ width: '100%', padding: 8, boxSizing: 'border-box' }}
-                    value={selected.label}
-                    onChange={(e) => flowStore.updateNodeLabel(selected.id, e.target.value)}
-                />
-            </div>
-
-            {showDataType && (
-                <div style={{ marginBottom: 16 }}>
-                    <div style={{ marginBottom: 8, fontWeight: 'bold' }}>Data Type:</div>
-                    <select
-                        style={{ width: '100%', padding: 8, boxSizing: 'border-box' }}
-                        value={selected.dataType}
-                        onChange={(e) => flowStore.updateNodeDataType(selected.id, e.target.value as DataType)}
+                <Box className={classes.section}>
+                    <Typography variant="subtitle1">Data Type</Typography>
+                    <Select
+                        value={node.dataType}
+                        onChange={(e) => flowStore.updateNodeDataType(node.id, e.target.value as DataType)}
+                        fullWidth
+                        margin="dense"
                     >
                         {Object.values(DataType).map((type) => (
-                            <option key={type} value={type}>
+                            <MenuItem key={type} value={type}>
                                 {type}
-                            </option>
+                            </MenuItem>
                         ))}
-                    </select>
-                </div>
-            )}
+                    </Select>
+                </Box>
 
-            <div style={{ flex: 1, overflowY: 'auto', marginBottom: 16 }}>
-                {DetailComponent && <DetailComponent node={selected} />}
-            </div>
+                {renderInitialValueInput()}
 
-            <button
-                onClick={handleDelete}
-                style={{
-                    width: '100%',
-                    padding: '10px 0',
-                    backgroundColor: '#f55',
-                    color: 'white',
-                    fontWeight: 'bold',
-                    border: 'none',
-                    borderRadius: 4,
-                    cursor: 'pointer',
-                }}
-                onMouseOver={(e) => e.currentTarget.style.backgroundColor = '#f33'}
-                onMouseOut={(e) => e.currentTarget.style.backgroundColor = '#f55'}
-            >
-                Delete Node
-            </button>
-        </div>
+                <Button
+                    variant="contained"
+                    color="error"
+                    onClick={handleDelete}
+                    className={classes.deleteButton}
+                >
+                    Delete Node
+                </Button>
+            </Box>
+        </Box>
     );
 });
 
