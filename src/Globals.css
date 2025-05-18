@@ -21,6 +21,7 @@
   --color-bg-primary: #f8f8f8;
   --color-bg-secondary: #2f3a68;
   --color-error: #da7d54;
+  --color-border: #dbdbdb;
 
   /* DataSim Node Colors */
   --color-node-blue-light: #E5F2FD;
@@ -68,6 +69,7 @@
 
 @layer utilities {
   .rounded-app { border-radius: 8px; }
+  
   .rounded-t-app {
     border-top-left-radius: 8px;
     border-top-right-radius: 8px;
@@ -77,19 +79,13 @@
     border-bottom-right-radius: 8px;
   }
 
-  .big-letter {
-    font: var(--font-big-letters);
-    color: var(--color-bg-secondary);
-  }
-
   .p-app { padding: 20px; }
 
+  /* Background color classes */
   .bg-bg { background-color: var(--color-bg);}
   .bg-primary { background-color: var(--color-bg-primary); }
   .bg-secondary { background-color: var(--color-bg-secondary); }
   .bg-error { background-color: var(--color-error); }
-
-  /* Background color classes */
   .bg-node-blue-light { background-color: var(--color-node-blue-light); }
   .bg-node-green-light { background-color: var(--color-node-green-light); }
   .bg-node-yellow-light { background-color: var(--color-node-yellow-light); }
@@ -126,4 +122,41 @@
     padding: 10px;
     @apply text-white;
   } 
+
+  .input-primary {
+    background-color: var(--color-bg-primary);
+    border-radius: 8px;
+    padding: 10px;
+    border: 2px solid var(--color-border);
+    color: var(--color-text);
+  }
+}
+
+@layer node {
+  .node-container  {
+    @apply flex flex-col items-center justify-center p-2 rounded-lg;
+  }
+
+  .node-letter {
+    @apply  font-bold text-3xl mr-4;
+    font: var(--font-big-letters);
+  }
+
+  .node-title {
+    @apply font-bold text-lg mb-1;
+    font: var(--font-h2);
+  }
+}
+
+@layer form {
+  .form-label {
+    @apply font-bold text-lg mb-1;
+  }
+  
+  .form-input {
+    border-color: var(--color-border);
+    @apply w-full p-4 border-2 rounded-lg
+  }
+
+  
 }

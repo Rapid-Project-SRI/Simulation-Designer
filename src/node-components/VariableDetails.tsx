@@ -6,11 +6,11 @@ import { NodeDetailProps } from './NodeTypes'
 const VariableDetails: React.FC<NodeDetailProps> = observer(({ node }) => {
     return (
         <>
-            <div style={{ marginBottom: 5 }}>Output Variable: {node.variableName}</div>
+            <div className='form-label'>Output Variable</div>
             <input
                 value={node.variableName}
                 onChange={(e) => flowStore.updateNodeVariableName(node.id, e.target.value)}
-                style={{ width: '100%', marginBottom: 5 }}
+                className='form-input bg-node-blue-light'
             />
         </>
     )

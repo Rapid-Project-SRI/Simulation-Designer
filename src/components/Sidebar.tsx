@@ -10,13 +10,13 @@ function SideBar() {
 
   return (
     // <aside style={{ padding: 10, background: '#f7f7f7', height: '100%', borderRight: '1px solid #ddd' }}>
-    <div className='p-2 flex flex-col bg-bg-primary gap-4'>
-      <h1 className='bg-blue p'>Library</h1>
+    <div className='p-2 flex flex-col min-w-full bg-bg-primary gap-4'>
+      <h1 className='bg-blue'>Library</h1>
 
       {/* Blue Node */}
       <div onDragStart={(event) => onDragStart(event, 'variableNode')} draggable
-        className="flex p-4 bg-node-blue-light rounded-app border-1 border-node-blue-dark">
-        <h3 className="big-letter text-node-blue-dark font-bold text-3xl mr-4">X</h3>
+        className="flex p-4 min-w-full bg-node-blue-light rounded-app border-1 border-node-blue-dark">
+        <h3 className="node-letter text-node-blue-dark font-bold text-3xl mr-4">X</h3>
         <div>
           <h3 className="text-node-blue-dark font-semibold text-lg">Variable Node</h3>
           <p className="text-node-blue-dark text-sm">Description</p>
@@ -26,7 +26,7 @@ function SideBar() {
       {/* Green Node */}
       <div onDragStart={(event) => onDragStart(event, 'transformerNode')} draggable
         className="flex p-4 bg-node-green-light rounded-app border-1 border-node-green-dark">
-        <h3 className="big-letter text-node-green-dark font-bold text-3xl mr-4">T</h3>
+        <h3 className="node-letter text-node-green-dark font-bold text-3xl mr-4">T</h3>
         <div>
           <h3 className="text-node-green-dark font-semibold text-lg">Transformer Node</h3>
           <p className="text-node-green-dark text-sm">Description</p>
@@ -36,7 +36,7 @@ function SideBar() {
       {/* Yellow Node */}
       <div onDragStart={(event) => onDragStart(event, 'dataProducerNode')} draggable
         className="flex p-4 bg-node-yellow-light rounded-app border-1 border-node-yellow-dark">
-        <h3 className="big-letter text-node-yellow-dark font-bold text-3xl mr-4">D</h3>
+        <h3 className="node-letter text-node-yellow-dark font-bold text-3xl mr-4">D</h3>
         <div>
           <h3 className="text-node-yellow-dark font-semibold text-lg">Data Producer Node</h3>
           <p className="text-node-yellow-dark text-sm">Description</p>
@@ -46,7 +46,7 @@ function SideBar() {
       {/* Orange Node */}
       <div onDragStart={(event) => onDragStart(event, 'combinerNode')} draggable
         className="flex p-4 bg-node-orange-light rounded-app border-1 border-node-orange-dark">
-        <h3 className="big-letter text-node-orange-dark font-bold text-3xl mr-4">C</h3>
+        <h3 className="node-letter text-node-orange-dark font-bold text-3xl mr-4">C</h3>
         <div>
           <h3 className="text-node-orange-dark font-semibold text-lg">Combiner Node</h3>
           <p className="text-node-orange-dark text-sm">Description</p>
@@ -56,9 +56,9 @@ function SideBar() {
       {/* Purple Node */}
       <div onDragStart={(event) => onDragStart(event, 'eventNode')} draggable
         className="flex p-4 bg-node-purple-light rounded-app border-1 border-node-purple-dark">
-        <h3 className="big-letter text-node-purple-dark font-bold text-3xl mr-4">E</h3>
+        <h3 className="node-letter text-node-purple-dark font-bold text-3xl mr-4">E</h3>
         <div>
-          <h3 className="text-node-purple-dark font-semibold text-lg">Variable Node</h3>
+          <h3 className="text-node-purple-dark font-semibold text-lg">Event Node</h3>
           <p className="text-node-purple-dark text-sm">Description</p>
         </div>
       </div>
@@ -66,55 +66,12 @@ function SideBar() {
       {/* Gray Node */}
       <div onDragStart={(event) => onDragStart(event, 'outputNode')} draggable 
         className="flex p-4 bg-node-gray-light rounded-app border-1 border-node-gray-dark">
-        <h3 className="big-letter text-node-gray-dark font-bold text-3xl mr-4">O</h3>
+        <h3 className="node-letter text-node-gray-dark font-bold text-3xl mr-4">O</h3>
         <div>
           <h3 className="text-node-gray-dark font-semibold text-lg">Ouput Node</h3>
           <p className="text-node-gray-dark text-sm">Description</p>
         </div>
       </div>
-      {/* <div
-        style={{ marginBottom: 5, padding: 8, background: '#ddd', cursor: 'grab' }}
-        onDragStart={(event) => onDragStart(event, 'variableNode')}
-        draggable
-      >
-        Variable Node
-      </div>
-      <div
-        style={{ marginBottom: 5, padding: 8, background: '#ddd', cursor: 'grab' }}
-        onDragStart={(event) => onDragStart(event, 'transformerNode')}
-        draggable
-      >
-        Transformer Node
-      </div>
-      <div
-        style={{ marginBottom: 5, padding: 8, background: '#ddd', cursor: 'grab' }}
-        onDragStart={(event) => onDragStart(event, 'dataProducerNode')}
-        draggable
-      >
-        Data Producer Node
-      </div>
-      <div
-        style={{ marginBottom: 5, padding: 8, background: '#ddd', cursor: 'grab' }}
-        onDragStart={(event) => onDragStart(event, 'combinerNode')}
-        draggable
-      >
-        Combiner Node
-      </div>
-      <div
-        style={{ marginBottom: 5, padding: 8, background: '#ddd', cursor: 'grab' }}
-        onDragStart={(event) => onDragStart(event, 'eventNode')}
-        draggable
-      >
-        Event Node
-      </div>
-      <div
-        style={{ marginBottom: 5, padding: 8, background: '#ddd', cursor: 'grab' }}
-        onDragStart={(event) => onDragStart(event, 'outputNode')}
-        draggable
-      >
-        Output Node
-      </div> */}
-    
     </div>
   );
 }
