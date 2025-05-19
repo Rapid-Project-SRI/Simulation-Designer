@@ -313,7 +313,7 @@ const FlowCanvas = observer(() => {
                     onClick={() => canvasRef.current?.focus()}
                     onDrop={onDrop}
                     onDragOver={onDragOver}
-                    className='w-full h-full'
+                    className='w-full h-full flex flex-col'
                 >
                     <h1 className='mb-2'>Workspace</h1>
                     <ReactFlow

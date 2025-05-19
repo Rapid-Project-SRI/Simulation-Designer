@@ -117,6 +117,10 @@ const DataProducerDetails: React.FC<NodeDetailProps> = observer(({ node }) => {
                 </div>
                 {!isPatternCollapsed && (
                     <div>
+                        <div className='grid grid-cols-2'>
+                            <p className='form-label'>Value</p>
+                            <p className='form-label'>Delay (ticks)</p>
+                        </div>
                         {node.pattern!.map((item, index) => (
                             <div key={index} className="flex items-center gap-2 mb-2">
                                 {renderDataInput(item, index)}
