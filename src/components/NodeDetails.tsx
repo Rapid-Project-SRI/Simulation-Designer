@@ -9,53 +9,19 @@ import CombinerDetails from '../node-components/CombinerDetails';
 import EventDetails from '../node-components/EventDetails'
 import OutputDetails from '../node-components/OutputDetails';
 import BranchDetails from '../node-components/BranchDetails'
-import { Box, Typography, TextField, Select, MenuItem, Button } from '@mui/material';
-import { makeStyles } from '@mui/styles';
 
-const nodeMap: Record<FlowNodeType, [React.FC<NodeDetailProps>, string]> = {
-    transformerNode: [TransformerDetails, "Transformer Node"],
-    variableNode: [VariableDetails, "Variable Node"],
-    dataProducerNode: [DataProducerDetails, "Data Producer Node"],
-    combinerNode: [CombinerDetails, "Combiner Node"],
-    eventNode: [EventDetails, "Event Node"],
-    outputNode: [OutputDetails, "Output Node"],
-    branchNode: [BranchDetails, "Branch Node"]
-}
+const nodeMap: Record<FlowNodeType, [React.FC<NodeDetailProps>, string, string, string]> = {
+    transformerNode: [TransformerDetails, "Transformer Node", "T", "-node-green-"],
+    variableNode: [VariableDetails, "Variable Node", "X", "-node-blue-"],
+    dataProducerNode: [DataProducerDetails, "Data Producer Node", "D", "-node-yellow-"],
+    combinerNode: [CombinerDetails, "Combiner Node", "C", "-node-orange-"],
+    eventNode: [EventDetails, "Event Node", "E", "-node-purple-"],
+    outputNode: [OutputDetails, "Output Node", "O", "-node-gray-"],
+    branchNode: [BranchDetails, "Branch Node", "B", "-node-red-"]
+};
 
-const useStyles = makeStyles({
-    root: {
-        width: '100%',
-        boxSizing: 'border-box',
-        padding: '16px',
-        display: 'flex',
-        flexDirection: 'column',
-        height: '100%',
-    },
-    title: {
-        marginBottom: '16px',
-    },
-    section: {
-        marginBottom: '16px',
-    },
-    scrollableContent: {
-        flex: 1,
-        overflowY: 'auto',
-    },
-    deleteButton: {
-        marginTop: '16px',
-    },
-    input: {
-        width: '100%',
-        marginBottom: '8px',
-    },
-    select: {
-        width: '100%',
-        marginBottom: '8px',
-    },
-});
 
 const NodeDetails = observer(() => {
-    const classes = useStyles();
     const selectedNodeId = flowStore.selectedNodeIds[0];
     const node = flowStore.nodes.find((n) => n.id === selectedNodeId);
 
@@ -74,16 +40,16 @@ const NodeDetails = observer(() => {
         if (node.type !== 'combinerNode' && node.type !== 'dataProducerNode') return null;
 
         return (
-            <Box className={classes.section}>
-                <Typography variant="subtitle1">Output Variable Name</Typography>
-                <TextField
+            <div >
+                <div className="form-label">Output Variable Name</div>
+                <input
+                    type="text"
                     value={node.variableName || ''}
                     onChange={(e) => flowStore.updateNodeVariableName(node.id, e.target.value)}
-                    fullWidth
-                    margin="normal"
                     placeholder="Enter output variable name..."
+                    className={inputStyle} 
                 />
-            </Box>
+            </div>
         );
     };
 
@@ -93,56 +59,63 @@ const NodeDetails = observer(() => {
         switch (node.dataType) {
             case DataType.NUMBER:
                 return (
-                    <TextField
-                        type="number"
-                        label="Initial Value"
-                        value={node.initialValue || 0}
-                        onChange={(e) => flowStore.updateNodeInitialValue(node.id, Number(e.target.value))}
-                        fullWidth
-                        margin="normal"
-                    />
+                    <div className="flex flex-col gap-2">
+                        <label className="form-label">Initial Value</label>
+                        <input
+                            type="number"
+                            value={node.initialValue || 0}
+                            onChange={(e) => flowStore.updateNodeInitialValue(node.id, Number(e.target.value))}
+                            className={inputStyle}
+                        />
+                    </div>
                 );
             case DataType.STRING:
                 return (
-                    <TextField
-                        type="text"
-                        label="Initial Value"
-                        value={node.initialValue || ''}
-                        onChange={(e) => flowStore.updateNodeInitialValue(node.id, e.target.value)}
-                        fullWidth
-                        margin="normal"
-                    />
+                    <div className="flex flex-col gap-2">
+                        <label className="form-label">Initial Value</label>
+                        <input
+                            type="text"
+                            value={node.initialValue || ''}
+                            placeholder="Enter initial value..."
+                            onChange={(e) => flowStore.updateNodeInitialValue(node.id, e.target.value)}
+                            className={inputStyle}
+                        />
+                    </div>
                 );
             case DataType.BOOLEAN:
                 return (
-                    <Box sx={{ display: 'flex', alignItems: 'center', mt: 2, mb: 2 }}>
-                        <Typography sx={{ mr: 2 }}>Initial Value:</Typography>
+                    <div className="flex items-center gap-2 mt-2 mb-2">
+                        <label className="form-label">Initial Value:</label>
                         <input
                             type="checkbox"
                             checked={node.initialValue || false}
                             onChange={(e) => flowStore.updateNodeInitialValue(node.id, e.target.checked)}
+                            className="checkbox"
                         />
-                    </Box>
+                    </div>
                 );
             case DataType.OBJECT:
                 return (
-                    <TextField
-                        type="text"
-                        label="Initial Value (JSON)"
-                        value={JSON.stringify(node.initialValue || {})}
-                        onChange={(e) => {
-                            try {
-                                const parsed = JSON.parse(e.target.value);
-                                flowStore.updateNodeInitialValue(node.id, parsed);
-                            } catch (err) {
-                                // Invalid JSON, ignore
-                            }
-                        }}
-                        fullWidth
-                        margin="normal"
-                        error={!isValidJSON(node.initialValue)}
-                        helperText={!isValidJSON(node.initialValue) ? "Invalid JSON" : ""}
-                    />
+                    <div className="flex flex-col gap-2">
+                        <label className="form-label">Initial Value (JSON)</label>
+                        <textarea
+                            value={JSON.stringify(node.initialValue || {})}
+                            onChange={(e) => {
+                                try {
+                                    const parsed = JSON.parse(e.target.value);
+                                    flowStore.updateNodeInitialValue(node.id, parsed);
+                                } catch (err) {
+                                    // Invalid JSON, ignore
+                                }
+                            }}
+                            className={`${inputStyle} resize-none`}
+                            rows={3}
+                            placeholder="Enter JSON object..."
+                        />
+                        {!isValidJSON(node.initialValue) && (
+                            <span className="text-error">Invalid JSON</span>
+                        )}
+                    </div>
                 );
             default:
                 return null;
@@ -158,71 +131,66 @@ const NodeDetails = observer(() => {
         }
     };
 
+    const inputStyle = `form-input ${'bg' + nodeMap[node.type][3] + 'light'}`
+
     return (
-        <Box className={classes.root}>
-            <Typography variant="h6" className={classes.title}>
-                {nodeMap[node.type][1]}
-            </Typography>
-            <Box className={classes.scrollableContent}>
-                <Box className={classes.section}>
-                    <Typography variant="subtitle1">Label</Typography>
-                    <TextField
+        <div className={`overflow-y-auto h-full p-2 flex flex-col min-w-full ${'bg' + nodeMap[node.type][3] + 'light'}`}>
+            <div className='flex'>
+                <h3 className={`node-letter font-bold text-3xl mb-2 mr-4 ${'text' + nodeMap[node.type][3] + 'dark'}`}>{nodeMap[node.type][2]}</h3>
+                <h1 className={`font-semibold text-3x1 ${'text' + nodeMap[node.type][3] + 'dark'}`}>{nodeMap[node.type][1]}</h1>
+            </div>
+            <div className='bg-bg-primary p-2 grid gap-4'>
+                <div>
+                    <div className='form-label'>Node Label</div>
+                    <input
+                        type="text"
+                        placeholder="Enter node label..."
                         value={node.label}
                         onChange={(e) => flowStore.updateNodeLabel(node.id, e.target.value)}
-                        fullWidth
-                        margin="normal"
+                        className={inputStyle}
                     />
-                </Box>
+                </div>
 
-                <Box className={classes.section}>
-                    <Typography variant="subtitle1">Description</Typography>
-                    <TextField
+                <div>
+                    <div className='form-label'>Description</div>
+                    <textarea
                         value={node.description || ''}
                         onChange={(e) => flowStore.updateNodeDescription(node.id, e.target.value)}
-                        fullWidth
-                        margin="normal"
-                        multiline
                         rows={3}
                         placeholder="Enter node description..."
+                        className={inputStyle}
                     />
-                </Box>
+                </div>
 
                 {showDataType && (
-                    <Box className={classes.section}>
-                        <Typography variant="subtitle1">Data Type</Typography>
-                        <Select
+                    <div>
+                        <div className="form-label">Data Type</div>
+                        <select
                             value={node.dataType}
                             onChange={(e) => flowStore.updateNodeDataType(node.id, e.target.value as DataType)}
-                            fullWidth
-                            margin="dense"
+                            className={inputStyle}
                         >
                             {Object.values(DataType).map((type) => (
-                                <MenuItem key={type} value={type}>
+                                <option key={type} value={type}>
                                     {type}
-                                </MenuItem>
+                                </option>
                             ))}
-                        </Select>
-                    </Box>
+                        </select>
+                    </div>
+
                 )}
 
                 {renderOutputVariableField()}
                 {renderInitialValueInput()}
 
                 {/* Node-specific details */}
-                <Box className={classes.section}>
+                <div>
                     {DetailComponent && <DetailComponent node={node} />}
-                </Box>
+                </div>
 
-                <Button
-                    variant="contained"
-                    color="error"
-                    onClick={handleDelete}
-                    className={classes.deleteButton}
-                >
-                    Delete Node
-                </Button>
-            </Box>
-        </Box>
+                <button onClick={handleDelete} className='btn-error'>Delete Node</button>
+            </div>
+        </div>
     );
 });
 

@@ -9,12 +9,17 @@ const EventNode: React.FC<NodeProps> = observer(({ data }) => {
   const nodeData = flowStore.nodes.find((n) => n.id === data.nodeId);
 
   return (
-    <div style={{ padding: 10, background: '#d6eaf8', border: '1px solid #777', borderRadius: 5 }}>
-      <div><strong>Event Node</strong></div>
+    <div className='node-container bg-node-purple-light'>
       <Handle type="source" position={Position.Right} />
-      <div style={{ color: '#21618c' }}>{nodeData?.label}</div>
-      <div>id: {nodeData?.id}</div>
-      <div style={{ fontSize: '0.8em', color: '#666' }}>Type: {nodeData?.dataType}</div>
+      <div
+        className="flex p-2">
+        <h3 className="node-letter text-node-purple-dark">E</h3>
+        <div>
+          <h3 className="text-node-purple-dark font-semibold text-lg">Event Node</h3>
+          <p>ID: {nodeData?.label}</p>
+          <p>Type: {nodeData?.dataType}</p>
+        </div>
+      </div>
     </div>
   );
 });

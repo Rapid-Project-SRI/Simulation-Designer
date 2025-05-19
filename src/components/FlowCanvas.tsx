@@ -18,6 +18,7 @@ import {
     BackgroundVariant
 } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
+import { IoMdDownload } from "react-icons/io";
 import { flowStore, nodeTypes, DataType } from '../FlowStore';
 import { getDefaultValueForType } from '../utils';
 
@@ -302,20 +303,54 @@ const FlowCanvas = observer(() => {
     // };
 
     return (
-        <div className='border-2 border-primary border-dashed rounded-app mx-2 p-2 bg-bg-primary'>
-            <h1>Workspace</h1>
-            <div
-            ref={canvasRef}
-            tabIndex={0}
-            onKeyDown={handleKeyDown}
-            onClick={() => canvasRef.current?.focus()}
-            style={{ width: '100%', height: '100vh', outline: 'none' }}
-            onDrop={onDrop}
-            onDragOver={onDragOver}
-        >
-            <div style={{ padding: 10 }}>
-                <button onClick={downloadJson}>Download JSON</button>
-                <button onClick={uploadJson} style={{ marginLeft: 8 }}>Upload JSON</button>
+        <div className="flex flex-col h-full">
+            {/* Workspace */}
+            <div className="flex flex-grow border-2 border-primary border-dashed rounded-app mx-2 p-2 bg-bg-primary">
+                <div
+                    ref={canvasRef}
+                    tabIndex={0}
+                    onKeyDown={handleKeyDown}
+                    onClick={() => canvasRef.current?.focus()}
+                    onDrop={onDrop}
+                    onDragOver={onDragOver}
+                    className='w-full h-full'
+                >
+                    <h1 className='mb-2'>Workspace</h1>
+                    <ReactFlow
+                        nodes={nodes}
+                        edges={edges}
+                        onNodesChange={onNodesChange}
+                        onEdgesChange={onEdgesChange}
+                        onConnect={onConnect}
+                        onNodeDragStop={onNodeDragStop}
+                        nodeTypes={nodeTypes as NodeTypes}
+                        selectNodesOnDrag={true}
+                        elementsSelectable
+                        onSelectionChange={({ nodes }) => {
+                            flowStore.setSelectedNodes(nodes.map((n) => n.id));
+                        }}
+                        onReconnect={onReconnect}
+                        onReconnectStart={onReconnectStart}
+                        onReconnectEnd={onReconnectEnd}
+                        fitView
+                        panOnScroll={false}
+                        proOptions={{ hideAttribution: true }}
+                        defaultEdgeOptions={{
+                            animated: true,
+                        }}
+                        connectionRadius={30}
+                        colorMode="light"
+                    >
+                        <MiniMap position='top-right' />
+                        <Background variant={BackgroundVariant.Dots} gap={12} size={1} />
+                    </ReactFlow>
+                </div>
+
+            </div>
+            {/* Buttons */}
+            <div className="my-5 p-2 flex justify-between">
+                <button onClick={downloadJson} className="btn-navy flex gap-3"><IoMdDownload size={25}/>Download JSON file</button>
+                <button onClick={uploadJson} className="btn-primary">Upload JSON</button>
                 <input
                     type="file"
                     ref={fileInputRef}
@@ -324,38 +359,9 @@ const FlowCanvas = observer(() => {
                     style={{ display: 'none' }}
                 />
             </div>
-
-            <ReactFlow
-                nodes={nodes}
-                edges={edges}
-                onNodesChange={onNodesChange}
-                onEdgesChange={onEdgesChange}
-                onConnect={onConnect}
-                onNodeDragStop={onNodeDragStop}
-                nodeTypes={nodeTypes as NodeTypes}
-                selectNodesOnDrag={true}
-                elementsSelectable
-                onSelectionChange={({ nodes }) => {
-                    flowStore.setSelectedNodes(nodes.map(n => n.id));
-                }}
-                onReconnect={onReconnect}
-                onReconnectStart={onReconnectStart}
-                onReconnectEnd={onReconnectEnd}
-                fitView
-                panOnScroll={false}
-                proOptions={{ hideAttribution: true }}
-                defaultEdgeOptions={{
-                    animated: true
-                }}
-                connectionRadius={30}
-                colorMode="light"
-            >
-                <MiniMap />
-                <Background variant={BackgroundVariant.Dots} gap={12} size={1} />
-            </ReactFlow>
-        </div>
         </div>
     );
+
 });
 
 export default FlowCanvas;

@@ -5,26 +5,29 @@ import { NodeDetailProps } from './NodeTypes'
 
 const OutputDetails: React.FC<NodeDetailProps> = observer(({ node }) => {
     return (
-        <>
-            <div style={{ marginBottom: 5 }}>Output Variable: {node.variableName}</div>
-            <input
-                value={node.variableName || ''}
-                onChange={(e) => flowStore.updateNodeVariableName(node.id, e.target.value)}
-                style={{ width: '100%', marginBottom: 5 }}
-                placeholder="Enter output variable name..."
-            />
-            <div style={{ marginBottom: 5 }}>Data Type: {node.dataType}</div>
-            <select
-                value={node.dataType}
-                onChange={(e) => flowStore.updateNodeDataType(node.id, e.target.value as DataType)}
-                style={{ width: '100%', marginBottom: 5 }}
-            >
-                <option value={DataType.NUMBER}>Number</option>
-                <option value={DataType.STRING}>String</option>
-                <option value={DataType.BOOLEAN}>Boolean</option>
-                <option value={DataType.OBJECT}>Object</option>
-            </select>
-        </>
+        <div className='grid gap-4'>
+            <div>
+                <div className='form-label'>Output Variable</div>
+                <input
+                    value={node.variableName || ''}
+                    onChange={(e) => flowStore.updateNodeVariableName(node.id, e.target.value)}
+                    className='form-input bg-node-gray-light'
+                />
+            </div>
+            <div>
+                <div className='form-label'>Data Type</div>
+                <select
+                    value={node.dataType}
+                    onChange={(e) => flowStore.updateNodeDataType(node.id, e.target.value as DataType)}
+                    className='form-input bg-node-gray-light'
+                >
+                    <option value={DataType.NUMBER}>Number</option>
+                    <option value={DataType.STRING}>String</option>
+                    <option value={DataType.BOOLEAN}>Boolean</option>
+                    <option value={DataType.OBJECT}>Object</option>
+                </select>
+            </div>
+        </div>
     )
 });
 

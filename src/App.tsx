@@ -9,31 +9,30 @@ import './Globals.css'
 
 export default function App() {
   return (
-    <div className='flex flex-col h-screen'>
+    <div className='h-screen flex flex-col'>
       <div className='bg-white p-2 '>
-      <h1 className="p-2 m-1 bg-bg-primary text-text rounded-app">Data Simulation Framework</h1>
-
+        <h1 className="p-2 m-1 bg-bg-primary text-text rounded-app">Data Simulation Framework</h1>
       </div>
-      <ReactFlowProvider>
-        <PanelGroup direction="horizontal" className="bg-white p-2" style={{ height: '100vh', width: '100vw' }}>
-          <Panel className="rounded-app mr-2 flex" defaultSize={40} minSize={25}>
+
+      <ReactFlowProvider >
+        <PanelGroup direction="horizontal" className="bg-white p-2 h-full w-full">
+          <Panel className="rounded-app mr-4 min-w-[250px]" defaultSize={15} minSize={15}>
             <SideBar />
           </Panel>
 
           <PanelResizeHandle style={{ width: '4px', background: '#ccc', cursor: 'col-resize' }} />
 
-          <Panel defaultSize={80} minSize={10}>
+          <Panel className="h-full oberflow-hidden" defaultSize={80} minSize={10}>
             <FlowCanvas />
           </Panel>
 
           <PanelResizeHandle style={{ width: '4px', background: '#ccc', cursor: 'col-resize' }} />
 
-          <Panel defaultSize={40} minSize={10}>
+          <Panel className="rounded-app ml-4" defaultSize={30} minSize={10}>
             <NodeDetails />
           </Panel>
         </PanelGroup>
       </ReactFlowProvider>
     </div>
-
   );
 }
