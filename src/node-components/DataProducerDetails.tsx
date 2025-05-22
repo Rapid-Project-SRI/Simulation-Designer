@@ -6,6 +6,7 @@ import { PatternItem } from './DataProducerNode';
 import { getDefaultValueForType } from '../utils';
 import { FaExpandAlt } from "react-icons/fa";
 import { RiCollapseDiagonalLine } from "react-icons/ri";
+import PatternPopup from '../components/PatternPopup';
 
 
 
@@ -133,6 +134,7 @@ const DataProducerDetails: React.FC<NodeDetailProps> = observer(({ node }) => {
                         <button onClick={addRow} className="btn-primary" title="Add row">
                             + Add a new Pattern
                         </button>
+                        <PatternPopup />
                     </div>
                 )}
             </div>
