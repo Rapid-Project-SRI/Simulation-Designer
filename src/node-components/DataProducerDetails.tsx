@@ -90,16 +90,6 @@ const DataProducerDetails: React.FC<NodeDetailProps> = observer(({ node }) => {
 
     return (
         <div className="grid gap-4">
-            {/* Output Variable */}
-            <div>
-                <div className="form-label">Output Variable</div>
-                <input
-                    value={node.variableName || ''}
-                    onChange={(e) => flowStore.updateNodeVariableName(node.id, e.target.value)}
-                    className="form-input bg-node-yellow-light"
-                    placeholder="Enter output variable name..."
-                />
-            </div>
 
             {/* Data Type */}
             <div>

@@ -68,7 +68,7 @@ function SideBar() {
         className="flex p-4 bg-node-gray-light rounded-app border-1 border-node-gray-dark">
         <h3 className="node-letter text-node-gray-dark font-bold text-3xl mr-4">O</h3>
         <div>
-          <h3 className="text-node-gray-dark font-semibold text-lg">Ouput Node</h3>
+          <h3 className="text-node-gray-dark font-semibold text-lg">Output Node</h3>
           <p className="text-node-gray-dark text-sm">Description</p>
         </div>
       </div>
