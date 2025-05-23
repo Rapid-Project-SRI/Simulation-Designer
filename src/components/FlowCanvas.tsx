@@ -21,6 +21,7 @@ import '@xyflow/react/dist/style.css';
 import { IoMdDownload } from "react-icons/io";
 import { flowStore, nodeTypes, DataType } from '../FlowStore';
 import { getDefaultValueForType } from '../utils';
+import InfoIcon from './InfoIcon';
 
 const defaultExpression = "output = input_1 + input_2 - 100";
 
@@ -315,7 +316,10 @@ const FlowCanvas = observer(() => {
                     onDragOver={onDragOver}
                     className='w-full h-full flex flex-col'
                 >
-                    <h1 className='mb-2'>Workspace</h1>
+                    <div className='flex items-center justify-between'>
+                        <h1 className='mb-2'>Workspace</h1>
+                        <InfoIcon />
+                    </div>
                     <ReactFlow
                         nodes={nodes}
                         edges={edges}
