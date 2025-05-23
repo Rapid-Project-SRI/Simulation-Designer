@@ -14,9 +14,9 @@ const CombinerNode: React.FC<NodeProps> = observer(({ data }) => {
         className="flex p-2">
         <h3 className="node-letter text-node-orange-dark">C</h3>
         <div>
-          <h3 className="text-node-orange-dark font-semibold text-lg">Combiner Node</h3>
-          <p>ID: {nodeData?.label}</p>
+          <h3 className="text-node-orange-dark font-semibold text-lg"> {nodeData?.label}</h3>
           <p>Type: {nodeData?.dataType}</p>
+          <p>Description: {nodeData?.description|| "undefined"}</p>
         </div>
       </div>
       <Handle type="source" position={Position.Right}/>

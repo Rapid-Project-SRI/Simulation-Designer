@@ -17,9 +17,9 @@ const TransformerNode: React.FC<NodeProps> = observer(({ data }) => {
         className="flex p-2">
         <h3 className="node-letter text-node-green-dark">T</h3>
         <div>
-          <h3 className="text-node-green-dark font-semibold text-lg">Transformer Node</h3>
-          <p>ID: {nodeData?.label}</p>
+          <h3 className="text-node-green-dark font-semibold text-lg">{nodeData?.label}</h3>
           <p>Type: {nodeData?.dataType}</p>
+          <p>Description: {nodeData?.description|| "undefined"}</p>
         </div>
       </div>
       <Handle type="source" position={Position.Right} style={{ background: '#555' }} />

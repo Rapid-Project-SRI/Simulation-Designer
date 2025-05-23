@@ -17,9 +17,9 @@ const OutputNode: React.FC<NodeProps> = observer(({ data }) => {
         className="flex p-2">
         <h3 className="node-letter text-node-gray-dark">O</h3>
         <div>
-          <h3 className="text-node-gray-dark font-semibold text-lg">Output Node</h3>
-          <p>ID: {nodeData?.label}</p>
+          <h3 className="text-node-gray-dark font-semibold text-lg">{nodeData?.label}</h3>
           <p>Type: {nodeData?.dataType}</p>
+          <p>Description: {nodeData?.description|| "undefined"}</p>
         </div>
       </div>
     </div>

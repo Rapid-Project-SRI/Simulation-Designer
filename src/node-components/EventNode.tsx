@@ -15,9 +15,9 @@ const EventNode: React.FC<NodeProps> = observer(({ data }) => {
         className="flex p-2">
         <h3 className="node-letter text-node-purple-dark">E</h3>
         <div>
-          <h3 className="text-node-purple-dark font-semibold text-lg">Event Node</h3>
-          <p>ID: {nodeData?.label}</p>
+          <h3 className="text-node-purple-dark font-semibold text-lg">{nodeData?.label}</h3>
           <p>Type: {nodeData?.dataType}</p>
+          <p>Description: {nodeData?.description|| "undefined"}</p>
         </div>
       </div>
     </div>
