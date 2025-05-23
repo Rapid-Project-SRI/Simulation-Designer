@@ -1,12 +1,13 @@
 import React, { useState } from 'react'
 import { NodeDetailProps } from './NodeTypes'
 import { observer } from 'mobx-react-lite';
-import { flowStore, DataType } from '../FlowStore';
+import { flowStore } from '../FlowStore';
 import { PatternItem } from './DataProducerNode';
 import { getDefaultValueForType } from '../utils';
 import { FaExpandAlt } from "react-icons/fa";
 import { RiCollapseDiagonalLine } from "react-icons/ri";
 import PatternPopup from '../components/PatternPopup';
+import { DataType } from '../items';
 
 
 

@@ -1,6 +1,19 @@
 import React, { useState } from 'react';
 import './PatternPopup.css'; // Import the CSS file for styling
-// import PatternEditor from './PatternEditor';
+import PatternContent from './PatternContent';
+
+// Mock pattern data
+const mockPattern = {
+    id: 'test-pattern',
+    name: 'Test Pattern',
+    length: 10,
+    events: new Map<number, unknown>([[1, 'A'], [3, 'B'], [5, 'C']]),
+};
+
+// Mock onPatternChange function
+const handlePatternChange = (newPattern: typeof mockPattern) => {
+    console.log('Pattern changed:', newPattern);
+};
 
 const PatternPopup: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -18,7 +31,7 @@ const PatternPopup: React.FC = () => {
             <div className="content">
               <h2>Pattern Popup</h2>
               <p>This is a popup window.</p>
-              {/* <PatternEditor /> */}
+              <PatternContent />
             </div>
           </div>
         </div>

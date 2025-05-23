@@ -9,17 +9,12 @@ import { CombineMode } from './node-components/NodeTypes';
 import EventNode from './node-components/EventNode';
 import OutputNode from './node-components/OutputNode';
 import BranchNode from './node-components/BranchNode';
+import { getDefaultValueForType } from './utils';
+import { Pattern, DataType } from './items';
 
 export type FlowNodeType =
     'variableNode' | 'transformerNode' | 'dataProducerNode' |
     'combinerNode' | 'eventNode' | 'outputNode' | 'branchNode';
-
-export enum DataType {
-    NUMBER = 'number',
-    STRING = 'string',
-    BOOLEAN = 'boolean',
-    OBJECT = 'object'
-}
 
 export const nodeTypes = {
     variableNode: VariableNode,
@@ -66,7 +61,10 @@ export interface FlowEdge {
 export class FlowStore {
     nodes: FlowNode[] = [];
     edges: FlowEdge[] = [];
+    patterns: Pattern<any>[] = [];
+
     selectedNodeIds: string[] = [];
+    selectedPatternId: string = '';
     nextNodeId: number = 1;
     nextEdgeId: number = 1;
 
@@ -105,6 +103,19 @@ export class FlowStore {
         // }
 
         this.edges.push(edge);
+    }
+
+    addPattern(pattern: Pattern<any>) {
+        this.patterns.push(pattern);
+    }
+
+    updatePattern(pattern: Pattern<any>) {
+        const targetPatternIndex: number = this.patterns.findIndex(p => p.id === pattern.id);
+        this.patterns[targetPatternIndex] = pattern;
+    }
+
+    setSelectedPattern(patternId: string) {
+        this.selectedPatternId = patternId;
     }
 
     deleteEdge(sourceId: string, targetId: string) {
@@ -212,8 +223,6 @@ export class FlowStore {
             node.dataType = dataType;
             // If it's a data producer node, update the pattern data to match the new type
             if (node.type === 'dataProducerNode' && node.pattern) {
-                // Import the function directly inside the method to avoid circular dependencies
-                const { getDefaultValueForType } = require('./utils');
                 const newPattern = node.pattern.map(item => ({
                     ...item,
                     data: getDefaultValueForType(dataType)

@@ -1,4 +1,4 @@
-import { DataType } from './FlowStore';
+import { DataType } from './items';
 
 export const getDefaultValueForType = (type: DataType): any => {
     switch (type) {

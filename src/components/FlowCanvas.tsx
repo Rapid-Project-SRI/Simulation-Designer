@@ -19,8 +19,9 @@ import {
 } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
 import { IoMdDownload } from "react-icons/io";
-import { flowStore, nodeTypes, DataType } from '../FlowStore';
+import { flowStore, nodeTypes } from '../FlowStore';
 import { getDefaultValueForType } from '../utils';
+import { DataType } from '../items';
 
 const defaultExpression = "output = input_1 + input_2 - 100";
 

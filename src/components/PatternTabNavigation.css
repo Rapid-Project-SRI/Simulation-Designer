@@ -1,0 +1,34 @@
+.pattern-tab-navigation {
+    display: flex;
+    border-bottom: 1px solid #ccc;
+    padding: 0 10px;
+}
+
+.tab-bar {
+    display: flex;
+    overflow-x: auto;
+}
+
+.tab-button {
+    background-color: #f1f1f1;
+    border: 1px solid #ccc;
+    border-bottom: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    margin-right: 5px;
+    border-radius: 5px 5px 0 0;
+    transition: background-color 0.3s ease;
+}
+
+.tab-button.active {
+    background-color: #fff;
+    border-bottom: 1px solid #fff;
+}
+
+.tab-button:hover {
+    background-color: #e0e0e0;
+}
+
+.new-tab {
+    font-weight: bold;
+} 

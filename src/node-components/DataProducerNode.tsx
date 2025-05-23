@@ -1,9 +1,10 @@
 import { observer } from 'mobx-react-lite';
 import React, { useEffect, useCallback, useRef } from 'react';
 import { Handle, Position } from '@xyflow/react';
-import { flowStore, FlowNode, DataType } from '../FlowStore';
+import { flowStore, FlowNode } from '../FlowStore';
 import { NodeProps } from './NodeTypes';
 import { getDefaultValueForType } from '../utils';
+import { DataType } from '../items';
 
 export interface PatternItem<T> {
     data: T;

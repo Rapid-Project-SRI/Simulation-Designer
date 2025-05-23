@@ -1,6 +1,6 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
-import { flowStore, FlowNodeType, FlowNode, DataType } from '../FlowStore';
+import { flowStore, FlowNodeType, FlowNode } from '../FlowStore';
 import TransformerDetails from '../node-components/TransformerDetails';
 import { NodeDetailProps } from '../node-components/NodeTypes';
 import VariableDetails from '../node-components/VariableDetails';
@@ -9,6 +9,7 @@ import CombinerDetails from '../node-components/CombinerDetails';
 import EventDetails from '../node-components/EventDetails'
 import OutputDetails from '../node-components/OutputDetails';
 import BranchDetails from '../node-components/BranchDetails'
+import { DataType } from '../items';
 
 const nodeMap: Record<FlowNodeType, [React.FC<NodeDetailProps>, string, string, string]> = {
     transformerNode: [TransformerDetails, "Transformer Node", "T", "-node-green-"],

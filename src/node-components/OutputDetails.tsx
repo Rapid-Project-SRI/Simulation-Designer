@@ -1,7 +1,8 @@
 import { observer } from 'mobx-react-lite'
 import React from 'react'
-import { flowStore, DataType } from '../FlowStore';
+import { flowStore } from '../FlowStore';
 import { NodeDetailProps } from './NodeTypes'
+import { DataType } from '../items';
 
 const OutputDetails: React.FC<NodeDetailProps> = observer(({ node }) => {
     return (
