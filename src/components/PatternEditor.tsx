@@ -33,9 +33,12 @@ const PatternEditor: React.FC<PatternEditorProps> = observer(({ patternId }) => 
     const [nodes, setNodes, onNodesChange] = useNodesState<Node>([]);
     const [edges, setEdges, onEdgesChange] = useEdgesState<Edge>([]);
     const currentPattern: Pattern<any> = flowStore.patterns.find(p => p.id === patternId)!;
-    const [showPopup, setShowPopup] = useState(false);
-    const [newEventData, setNewEventData] = useState('');
-    const [newEventTick, setNewEventTick] = useState('');
+    const [showNewEventPopup, setShowNewEventPopup] = useState(false);
+    const [showEditEventPopup, setShowEditEventPopup] = useState(false);
+    const [newEventData, setNewEventData] = useState<string>('');
+    const [newEventTick, setNewEventTick] = useState<string>('');
+    const [selectedEventTick, setSelectedEventTick] = useState<number>(-1);
+    const [popupPosition, setPopupPosition] = useState<{ x: number, y: number}>({x: 0, y: 0});
 
     const rebuildGraph = useCallback(() => {
         if (!currentPattern) return;
@@ -51,8 +54,7 @@ const PatternEditor: React.FC<PatternEditorProps> = observer(({ patternId }) => 
                 data: {
                     tick,
                     value,
-                    onTickChange: handleTickChange,
-                    onValueChange: handleValueChange,
+                    onClick: displayEditEventPopup
                 },
                 style: { width: 50, height: 30, backgroundColor: '#ddd' },
             });
@@ -79,9 +81,7 @@ const PatternEditor: React.FC<PatternEditorProps> = observer(({ patternId }) => 
             position: { x: currentPattern.length * PX_PER_TICK, y: LANE_Y },
             data: { 
                 tick: 13,
-                value: "End",
-                onTickChange: handleTickChange,
-                onValueChange: handleValueChange,
+                value: "End"
             },
             style: { width: 50, height: 30, backgroundColor: '#f00' },
         });
@@ -156,30 +156,53 @@ const PatternEditor: React.FC<PatternEditorProps> = observer(({ patternId }) => 
         const updatedEvents = new Map(currentPattern.events);
         updatedEvents.set(tick, value);
         flowStore.updatePattern({ ...currentPattern, events: updatedEvents });
-        setShowPopup(false);
+        setShowNewEventPopup(false);
         setNewEventData('');
         setNewEventTick('');
     };
 
-    const handleTickChange = (id: string, newTick: number) => {
-        if (!currentPattern) return;
-        const [_, patternId, tickStr] = id.split('-');
-        const oldTick = parseInt(tickStr, 10);
+    const handleEditEvent = () => {
+        const newTick: number = parseInt(newEventTick, 10);
+        let value;
+        switch (currentPattern.dataType) {
+            case DataType.NUMBER:
+                value = Number(newEventData);
+                if (isNaN(value)) return alert('Invalid number');
+                break;
+            case DataType.STRING:
+                value = newEventData;
+                break;
+            case DataType.BOOLEAN:
+                value = newEventData.toLowerCase() === 'true';
+                break;
+            case DataType.OBJECT:
+                try {
+                    value = JSON.parse(newEventData);
+                } catch {
+                    return alert('Invalid JSON object');
+                }
+                break;
+            default:
+                return;
+        }
         const updatedEvents = new Map(currentPattern.events);
-        const value = updatedEvents.get(oldTick);
-        updatedEvents.delete(oldTick);
+        updatedEvents.delete(selectedEventTick);
         updatedEvents.set(newTick, value);
-        flowStore.updatePattern({ ...currentPattern, events: updatedEvents });
-    };
+        flowStore.updatePattern({...currentPattern, events: updatedEvents});
+        setShowEditEventPopup(false);
+        setNewEventData('');
+        setNewEventTick('');
+        setSelectedEventTick(-1);
+    }
 
-    const handleValueChange = (id: string, newValue: any) => {
-        if (!currentPattern) return;
-        const [_, patternId, tickStr] = id.split('-');
-        const tick = parseInt(tickStr, 10);
-        const updatedEvents = new Map(currentPattern.events);
-        updatedEvents.set(tick, newValue);
-        flowStore.updatePattern({ ...currentPattern, events: updatedEvents });
-    };
+    const displayEditEventPopup = (curTick: number, curValue: string, rect: DOMRect) => {
+        console.log("displayEditEventPopup");
+        setSelectedEventTick(curTick);
+        setPopupPosition({ x: rect.x, y: rect.y });
+        setNewEventData(curValue);
+        setNewEventTick(String(curTick));
+        setShowEditEventPopup(true);
+    }
 
     useEffect(() => {
         rebuildGraph();
@@ -240,9 +263,9 @@ const PatternEditor: React.FC<PatternEditorProps> = observer(({ patternId }) => 
                 </div>
             </div>
             <div style={{ position: 'absolute', bottom: 10, right: 10 }}>
-                <button onClick={() => setShowPopup(true)} style={{ fontSize: '24px', padding: '10px', borderRadius: '50%', backgroundColor: '#007bff', color: '#fff', border: 'none', cursor: 'pointer' }}>+</button>
+                <button onClick={() => setShowNewEventPopup(true)} style={{ fontSize: '24px', padding: '10px', borderRadius: '50%', backgroundColor: '#007bff', color: '#fff', border: 'none', cursor: 'pointer' }}>+</button>
             </div>
-            {showPopup && (
+            {showNewEventPopup && (
                 <div style={{ position: 'absolute', bottom: 60, right: 10, backgroundColor: '#fff', padding: '10px', boxShadow: '0 0 10px rgba(0,0,0,0.1)', borderRadius: '5px' }}>
                     <div>
                         <label>Data:</label>
@@ -253,7 +276,21 @@ const PatternEditor: React.FC<PatternEditorProps> = observer(({ patternId }) => 
                         <input type="text" value={newEventTick} onChange={(e) => setNewEventTick(e.target.value)} />
                     </div>
                     <button onClick={handleAddEvent} style={{ marginTop: '10px', backgroundColor: '#28a745', color: '#fff', border: 'none', padding: '5px 10px', cursor: 'pointer' }}>Add Event</button>
-                    <button onClick={() => setShowPopup(false)} style={{ marginTop: '10px', backgroundColor: '#dc3545', color: '#fff', border: 'none', padding: '5px 10px', cursor: 'pointer' }}>Cancel</button>
+                    <button onClick={() => { setShowNewEventPopup(false); setNewEventData(''); setNewEventTick('')}} style={{ marginTop: '10px', backgroundColor: '#dc3545', color: '#fff', border: 'none', padding: '5px 10px', cursor: 'pointer' }}>Cancel</button>
+                </div>
+            )}
+            {showEditEventPopup && popupPosition && (
+                <div style={{ position: 'absolute', top: popupPosition.y - 30, left: popupPosition.x - 175, backgroundColor: '#fff', padding: '10px', boxShadow: '0 0 10px rgba(0,0,0,0.1)', borderRadius: '5px' }}>
+                    <div>
+                        <label>Data:</label>
+                        <input type="text" value={newEventData} onChange={(e) => setNewEventData(e.target.value)} />
+                    </div>
+                    <div>
+                        <label>Tick:</label>
+                        <input type="text" value={newEventTick} onChange={(e) => setNewEventTick(e.target.value)} />
+                    </div>
+                    <button onClick={handleEditEvent} style={{ marginTop: '10px', backgroundColor: '#28a745', color: '#fff', border: 'none', padding: '5px 10px', cursor: 'pointer' }}>Edit Event</button>
+                    <button onClick={() => { setShowEditEventPopup(false); setNewEventData(''); setNewEventTick(''); setSelectedEventTick(-1)}} style={{ marginTop: '10px', backgroundColor: '#dc3545', color: '#fff', border: 'none', padding: '5px 10px', cursor: 'pointer' }}>Cancel</button>
                 </div>
             )}
         </PatternEditorProvider>

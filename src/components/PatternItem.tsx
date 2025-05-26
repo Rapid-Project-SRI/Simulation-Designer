@@ -5,13 +5,17 @@ interface PatternItemProps {
     data: {
         tick: number;
         value: any;
-        onTickChange: (id: string, newTick: number) => void;
-        onValueChange: (id: string, newValue: any) => void;
+        onClick: (curTick: number, curValue: string, rect: DOMRect) => void;
     };
 }
 
 const PatternItem: React.FC<PatternItemProps> = ({ id, data }) => {
-    const { tick, value, onTickChange, onValueChange } = data;
+    const { tick, value, onClick } = data;
+
+    const handleClick = (e: React.MouseEvent) => {
+        const rect = e.currentTarget.getBoundingClientRect();
+        onClick(tick, value, rect);
+    }
 
     return (
         <div
@@ -27,25 +31,14 @@ const PatternItem: React.FC<PatternItemProps> = ({ id, data }) => {
                 cursor: 'pointer',
                 padding: '5px',
             }}
+            onClick={handleClick}
         >
             <Handle type="target" position={Position.Left} style={{ background: '#555' }} />
             <div>
-                <label>Tick:</label>
-                <input
-                    type="number"
-                    value={tick}
-                    onChange={(e) => onTickChange(id, parseInt(e.target.value, 10))}
-                    style={{ width: '40px', margin: '2px' }}
-                />
+                <label>Tick: {tick}</label>
             </div>
             <div>
-                <label>Value:</label>
-                <input
-                    type="text"
-                    value={value}
-                    onChange={(e) => onValueChange(id, e.target.value)}
-                    style={{ width: '40px', margin: '2px' }}
-                />
+                <label>Value: {value}</label>
             </div>
             <Handle type="target" position={Position.Right} style={{ background: '#555' }} />
         </div>
