@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { observer } from 'mobx-react-lite';
 import PatternTabNavigation from './PatternTabNavigation';
-import PatternEditor from './PatternEditor';
+import PatternEditor from '../pattern-components/PatternEditor';
 import { flowStore } from '../FlowStore';
 
 const PatternContent: React.FC = observer(() => {

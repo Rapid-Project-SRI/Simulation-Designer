@@ -17,7 +17,8 @@ import { Pattern, DataType } from '../items';
 import PatternItem from './PatternItem';
 
 const PX_PER_TICK = 120;
-const LANE_Y = 100;
+const EVENT_LANE_Y = 100;
+const END_LANE_Y = 170;
 
 interface PatternEditorProps {
     patternId: string;
@@ -50,7 +51,7 @@ const PatternEditor: React.FC<PatternEditorProps> = observer(({ patternId }) => 
             newNodes.push({
                 id: `event-${currentPattern.id}-${tick}`,
                 type: 'patternItem',
-                position: { x: tick * PX_PER_TICK, y: LANE_Y },
+                position: { x: tick * PX_PER_TICK, y: EVENT_LANE_Y },
                 data: {
                     tick,
                     value,
@@ -78,7 +79,7 @@ const PatternEditor: React.FC<PatternEditorProps> = observer(({ patternId }) => 
         // Add end-handle node
         newNodes.push({
             id: `end-handle-${currentPattern.id}`,
-            position: { x: currentPattern.length * PX_PER_TICK, y: LANE_Y },
+            position: { x: currentPattern.length * PX_PER_TICK, y: END_LANE_Y },
             data: { 
                 tick: 13,
                 value: "End"

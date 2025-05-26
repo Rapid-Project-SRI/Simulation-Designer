@@ -6,7 +6,7 @@ import { PatternItem } from './DataProducerNode';
 import { getDefaultValueForType } from '../utils';
 import { FaExpandAlt } from "react-icons/fa";
 import { RiCollapseDiagonalLine } from "react-icons/ri";
-import PatternPopup from '../components/PatternPopup';
+import PatternPopup from '../pattern-components/PatternPopup';
 import { DataType } from '../items';
 
 
