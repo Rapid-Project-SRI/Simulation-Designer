@@ -34,7 +34,6 @@ const StartHandleNode: React.FC<StartHandleNodeProps> = ({ id, data }) => {
             }}
             onClick={handleClick}
         >
-            <Handle type="target" position={Position.Left} style={{ background: '#555' }} />
             <div>
                 <label>Start Tick: {tick}</label>
             </div>

@@ -34,7 +34,6 @@ const EndHandleNode: React.FC<EndHandleNodeProps> = ({ id, data }) => {
             }}
             onClick={handleClick}
         >
-            <Handle type="target" position={Position.Left} style={{ background: '#555' }} />
             <div>
                 <label>End Tick: {tick}</label>
             </div>

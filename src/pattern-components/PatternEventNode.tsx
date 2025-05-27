@@ -33,14 +33,14 @@ const PatternItem: React.FC<PatternItemProps> = ({ id, data }) => {
             }}
             onClick={handleClick}
         >
-            <Handle type="target" position={Position.Left} style={{ background: '#555' }} />
+            <Handle type="source" position={Position.Right} id="source" style={{ background: '#555' }} />
+            <Handle type="target" position={Position.Left} id="target" style={{ background: '#555' }} />
             <div>
                 <label>Tick: {tick}</label>
             </div>
             <div>
                 <label>Value: {value}</label>
             </div>
-            <Handle type="target" position={Position.Right} style={{ background: '#555' }} />
         </div>
     );
 };
