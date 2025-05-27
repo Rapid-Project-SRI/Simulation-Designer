@@ -14,7 +14,7 @@ const PatternTabNavigation: React.FC<PatternTabNavigationProps> = observer(({ ac
         const newPattern = {
             id: `pattern-${Date.now()}`,
             name: 'New Pattern',
-            length: 0,
+            length: 5,
             events: new Map(),
             description: '',
             dataType: DataType.NUMBER

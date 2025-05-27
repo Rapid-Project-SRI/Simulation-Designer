@@ -14,7 +14,8 @@ import { observer } from 'mobx-react-lite';
 import { PatternEditorProvider } from '../PatternEditorContext';
 import { flowStore } from '../FlowStore';
 import { Pattern, DataType } from '../items';
-import PatternItem from './PatternItem';
+import PatternItem from './PatternEventNode';
+import EndHandleNode from './EndHandleNode';
 
 const PX_PER_TICK = 120;
 const EVENT_LANE_Y = 100;
@@ -26,6 +27,7 @@ interface PatternEditorProps {
 
 const nodeTypes: NodeTypes = {
     patternItem: PatternItem,
+    endHandleNode: EndHandleNode
 };
 
 // PatternEditor<T>
@@ -76,16 +78,16 @@ const PatternEditor: React.FC<PatternEditorProps> = observer(({ patternId }) => 
             }
         });
 
-        // Add end-handle node
+        // Add end handle node
         newNodes.push({
             id: `end-handle-${currentPattern.id}`,
-            position: { x: currentPattern.length * PX_PER_TICK, y: END_LANE_Y },
+            type: 'endHandleNode',
+            position: { x: (currentPattern.length - 1) * PX_PER_TICK, y: END_LANE_Y },
             data: { 
-                tick: 13,
-                value: "End"
+                tick: currentPattern.length - 1,
             },
-            style: { width: 50, height: 30, backgroundColor: '#f00' },
-        });
+            style: { width: 50, height: 30, backgroundColor: '#ddd' },
+        }); 
 
         // Add edge from last event to end-handle
         if (currentPattern.events.size > 0) {
@@ -99,6 +101,7 @@ const PatternEditor: React.FC<PatternEditorProps> = observer(({ patternId }) => 
 
         setNodes(newNodes);
         setEdges(newEdges);
+        console.log(newNodes);
     }, [currentPattern]);
 
     const handleDataTypeChange = (newType: string) => {
