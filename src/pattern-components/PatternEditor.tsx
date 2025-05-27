@@ -107,10 +107,10 @@ const PatternEditor: React.FC<PatternEditorProps> = observer(({ patternId }) => 
 
         // Add edge from last event to end-handle
         if (currentPattern.events.size > 0) {
-            const lastTick = Array.from(currentPattern.events.keys()).pop();
+            const latestEventTick = Array.from(currentPattern.events.keys()).sort((a, b) => a - b).pop();
             newEdges.push({
-                id: `edge-${currentPattern.id}-${lastTick}-end-handle`,
-                source: `event-${currentPattern.id}-${lastTick}`,
+                id: `edge-${currentPattern.id}-${latestEventTick}-end-handle`,
+                source: `event-${currentPattern.id}-${latestEventTick}`,
                 target: `end-handle-${currentPattern.id}`,
             });
         }
@@ -150,7 +150,9 @@ const PatternEditor: React.FC<PatternEditorProps> = observer(({ patternId }) => 
     const handleAddEvent = () => {
         if (!currentPattern) return;
         const tick = parseInt(newEventTick, 10);
-        if (isNaN(tick)) return alert('Invalid tick value');
+        if (isNaN(tick) || tick < 0 || tick > currentPattern.length - 1) {
+            return alert('Invalid tick value. Tick must be in the range 0 - ' + (currentPattern.length - 1));
+        }
         let value;
         switch (currentPattern.dataType) {
             case DataType.NUMBER:
@@ -183,6 +185,9 @@ const PatternEditor: React.FC<PatternEditorProps> = observer(({ patternId }) => 
 
     const handleEditEvent = () => {
         const newTick: number = parseInt(newEventTick, 10);
+        if (isNaN(newTick) || newTick < 0 || newTick > currentPattern.length - 1) {
+            return alert('Invalid tick value. Tick must be in the range 0 - ' + (currentPattern.length - 1));
+        }
         let value;
         switch (currentPattern.dataType) {
             case DataType.NUMBER:
@@ -226,6 +231,13 @@ const PatternEditor: React.FC<PatternEditorProps> = observer(({ patternId }) => 
 
     const handleEditEnd = () => {
         const newTick: number = parseInt(newEventTick, 10);
+        if (isNaN(newTick) || newTick < 0) {
+            return alert('Invalid tick value. End Tick cannot be less than Start Tick.');
+        }
+        const latestEventTick = Array.from(currentPattern.events.keys()).sort((a, b) => a - b).pop();
+        if (latestEventTick !== undefined && newTick < latestEventTick) {
+            return alert('Invalid tick value. End Tick cannot be less than the latest event node\'s tick (' + latestEventTick + ').');
+        }
         flowStore.updatePattern({...currentPattern, length: newTick + 1})
         setShowEndPopup(false);
         setNewEventTick('');
