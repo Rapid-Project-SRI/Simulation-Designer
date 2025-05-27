@@ -5,11 +5,17 @@ interface EndHandleNodeProps {
     id: string;
     data: {
         tick: number;
+        onClick: (rect: DOMRect) => void;
     };
 }
 
 const EndHandleNode: React.FC<EndHandleNodeProps> = ({ id, data }) => {
-    const { tick } = data;
+    const { tick, onClick } = data;
+
+    const handleClick = (e: React.MouseEvent) => {
+        const rect = e.currentTarget.getBoundingClientRect();
+        onClick(rect);
+    }
 
     return (
         <div
@@ -26,6 +32,7 @@ const EndHandleNode: React.FC<EndHandleNodeProps> = ({ id, data }) => {
                 padding: '5px',
                 zIndex: 10
             }}
+            onClick={handleClick}
         >
             <Handle type="target" position={Position.Left} style={{ background: '#555' }} />
             <div>

@@ -38,6 +38,7 @@ const PatternEditor: React.FC<PatternEditorProps> = observer(({ patternId }) => 
     const currentPattern: Pattern<any> = flowStore.patterns.find(p => p.id === patternId)!;
     const [showNewEventPopup, setShowNewEventPopup] = useState(false);
     const [showEditEventPopup, setShowEditEventPopup] = useState(false);
+    const [showEndPopup, setShowEndPopup] = useState(false);
     const [newEventData, setNewEventData] = useState<string>('');
     const [newEventTick, setNewEventTick] = useState<string>('');
     const [selectedEventTick, setSelectedEventTick] = useState<number>(-1);
@@ -85,6 +86,7 @@ const PatternEditor: React.FC<PatternEditorProps> = observer(({ patternId }) => 
             position: { x: (currentPattern.length - 1) * PX_PER_TICK, y: END_LANE_Y },
             data: { 
                 tick: currentPattern.length - 1,
+                onClick: displayEditEndPopup
             },
             style: { width: 50, height: 30, backgroundColor: '#ddd' },
         }); 
@@ -208,6 +210,19 @@ const PatternEditor: React.FC<PatternEditorProps> = observer(({ patternId }) => 
         setShowEditEventPopup(true);
     }
 
+    const handleEditEnd = () => {
+        const newTick: number = parseInt(newEventTick, 10);
+        flowStore.updatePattern({...currentPattern, length: newTick + 1})
+        setShowEndPopup(false);
+        setNewEventTick('');
+    }
+
+    const displayEditEndPopup = (rect: DOMRect) => {
+        setPopupPosition({ x: rect.x, y: rect.y});
+        setNewEventTick(String(currentPattern.length - 1));
+        setShowEndPopup(true);
+    }
+
     useEffect(() => {
         rebuildGraph();
     }, [currentPattern]);
@@ -295,6 +310,16 @@ const PatternEditor: React.FC<PatternEditorProps> = observer(({ patternId }) => 
                     </div>
                     <button onClick={handleEditEvent} style={{ marginTop: '10px', backgroundColor: '#28a745', color: '#fff', border: 'none', padding: '5px 10px', cursor: 'pointer' }}>Edit Event</button>
                     <button onClick={() => { setShowEditEventPopup(false); setNewEventData(''); setNewEventTick(''); setSelectedEventTick(-1)}} style={{ marginTop: '10px', backgroundColor: '#dc3545', color: '#fff', border: 'none', padding: '5px 10px', cursor: 'pointer' }}>Cancel</button>
+                </div>
+            )}
+            {showEndPopup && popupPosition && (
+                <div style={{ position: 'absolute', top: popupPosition.y - 30, left: popupPosition.x - 175, backgroundColor: '#fff', padding: '10px', boxShadow: '0 0 10px rgba(0,0,0,0.1)', borderRadius: '5px' }}>
+                    <div>
+                        <label>Tick:</label>
+                        <input type="text" value={newEventTick} onChange={(e) => setNewEventTick(e.target.value)} />
+                    </div>
+                    <button onClick={handleEditEnd} style={{ marginTop: '10px', backgroundColor: '#28a745', color: '#fff', border: 'none', padding: '5px 10px', cursor: 'pointer' }}>Edit Event</button>
+                    <button onClick={() => { setShowEndPopup(false); setNewEventTick('');}} style={{ marginTop: '10px', backgroundColor: '#dc3545', color: '#fff', border: 'none', padding: '5px 10px', cursor: 'pointer' }}>Cancel</button>
                 </div>
             )}
         </PatternEditorProvider>
