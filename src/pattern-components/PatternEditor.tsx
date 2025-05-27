@@ -16,6 +16,7 @@ import { flowStore } from '../FlowStore';
 import { Pattern, DataType } from '../items';
 import PatternItem from './PatternEventNode';
 import EndHandleNode from './EndHandleNode';
+import StartHandleNode from './StartHandleNode';
 
 const PX_PER_TICK = 120;
 const EVENT_LANE_Y = 100;
@@ -27,7 +28,8 @@ interface PatternEditorProps {
 
 const nodeTypes: NodeTypes = {
     patternItem: PatternItem,
-    endHandleNode: EndHandleNode
+    endHandleNode: EndHandleNode,
+    startHandleNode: StartHandleNode
 };
 
 // PatternEditor<T>
@@ -78,6 +80,18 @@ const PatternEditor: React.FC<PatternEditorProps> = observer(({ patternId }) => 
                 });
             }
         });
+
+        // Add start handle node
+        newNodes.push({
+            id: `start-handle-${currentPattern.id}`,
+            type: 'startHandleNode',
+            position: { x: 0, y: END_LANE_Y },
+            data: { 
+                tick: 0,
+                onClick: () => {}
+            },
+            style: { width: 50, height: 30, backgroundColor: '#ddd' },
+        }); 
 
         // Add end handle node
         newNodes.push({
