@@ -249,10 +249,12 @@ const FlowCanvas = observer(() => {
             label: `Data Producer ${flowStore.getDataProducerIndex()}`,
             position,
             dataType,
-            pattern: [],
-            startTick: 0,
-            endTick: 100,
-            repeat: false,
+            timeline: {
+                patterns: [],
+                repeat: false,
+                startTick: 0,
+                endTick: 9
+            },
             description: '',
             variableName: `producer_${id}`
         });

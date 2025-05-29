@@ -10,7 +10,7 @@ import EventNode from './node-components/EventNode';
 import OutputNode from './node-components/OutputNode';
 import BranchNode from './node-components/BranchNode';
 import { getDefaultValueForType } from './utils';
-import { Pattern, DataType } from './items';
+import { Pattern, DataType, DataTimeline } from './items';
 
 export type FlowNodeType =
     'variableNode' | 'transformerNode' | 'dataProducerNode' |
@@ -38,12 +38,8 @@ export interface FlowNode {
 
     //only for CalcNode
     expression?: string;
-
     //only for DataProd
-    pattern?: PatternItem<number>[]; // the pattern is stored as an array of objects
-    startTick?: number;
-    endTick?: number;
-    repeat?: boolean; // whether to repeat the pattern
+    timeline?: DataTimeline;
     defaultVal?: any;
 
     //only for VariableNode
@@ -144,31 +140,10 @@ export class FlowStore {
         }
     }
 
-    updateNodePattern(id: string, newPattern: PatternItem<any>[]) {
+    updateDataTimeline(id: string, newTimeline: DataTimeline) {
         const node = this.nodes.find((n) => n.id === id);
-        if (node && node.type === 'dataProducerNode') {
-            // Validate that all pattern items match the node's data type
-            const isValid = newPattern.every(item => {
-                switch (node.dataType) {
-                    case DataType.NUMBER:
-                        return typeof item.data === 'number';
-                    case DataType.STRING:
-                        return typeof item.data === 'string';
-                    case DataType.BOOLEAN:
-                        return typeof item.data === 'boolean';
-                    case DataType.OBJECT:
-                        return typeof item.data === 'object' && item.data !== null;
-                    default:
-                        return false;
-                }
-            });
-
-            if (!isValid) {
-                console.warn(`Invalid data type in pattern for node ${id}. Expected ${node.dataType}`);
-                return;
-            }
-
-            node.pattern = newPattern;
+        if (node) {
+            node.timeline = newTimeline;
         }
     }
 
@@ -176,21 +151,6 @@ export class FlowStore {
         const node = this.nodes.find((n) => n.id === id);
         if (node) {
             node.position = position;
-        }
-    }
-
-    updateNodeTime(id: string, startTick: number, endTick: number) {
-        const node = this.nodes.find((n) => n.id === id);
-        if (node) {
-            node.startTick = startTick;
-            node.endTick = endTick;
-        }
-    }
-
-    updateNodeRepeat(id: string, repeat: boolean) {
-        const node = this.nodes.find((n) => n.id === id);
-        if (node && node.type === 'dataProducerNode') {
-            node.repeat = repeat;
         }
     }
 

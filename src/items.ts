@@ -13,6 +13,13 @@ export interface Pattern<T> {
     dataType: DataType; // Type of data used in the pattern
 }
 
+export interface DataTimeline {
+    patterns: { pattern: Pattern<any>; startTick: number; }[];  // Patterns sorted by startTick
+    repeat: boolean;      // Whether the entire timeline should repeat
+    startTick: number;
+    endTick: number;
+}
+
 export enum DataType {
     NUMBER = 'number',
     STRING = 'string',

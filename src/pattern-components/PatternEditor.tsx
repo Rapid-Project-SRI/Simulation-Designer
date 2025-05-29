@@ -15,7 +15,7 @@ import { observer } from 'mobx-react-lite';
 import { PatternEditorProvider } from '../PatternEditorContext';
 import { flowStore } from '../FlowStore';
 import { Pattern, DataType } from '../items';
-import PatternItem from './PatternEventNode';
+import PatternEventNode from './PatternEventNode';
 import EndHandleNode from './EndHandleNode';
 import StartHandleNode from './StartHandleNode';
 
@@ -28,7 +28,7 @@ interface PatternEditorProps {
 }
 
 const nodeTypes: NodeTypes = {
-    patternItem: PatternItem,
+    patternEventNode: PatternEventNode,
     endHandleNode: EndHandleNode,
     startHandleNode: StartHandleNode
 };
@@ -56,7 +56,7 @@ const PatternEditor: React.FC<PatternEditorProps> = observer(({ patternId }) => 
         Array.from(currentPattern.events.entries()).forEach(([tick, value], index) => {
             newNodes.push({
                 id: `event-${currentPattern.id}-${tick}`,
-                type: 'patternItem',
+                type: 'patternEventNode',
                 position: { x: tick * PX_PER_TICK, y: EVENT_LANE_Y },
                 data: {
                     tick,

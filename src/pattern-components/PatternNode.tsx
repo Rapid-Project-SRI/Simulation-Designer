@@ -1,20 +1,21 @@
 import React, { useState } from 'react';
 import { Handle, Position } from '@xyflow/react';
-interface PatternEventNodeProps {
+import { Pattern } from '../items';
+interface PatternNodeProps {
     id: string;
     data: {
         tick: number;
-        value: any;
-        onClick: (curTick: number, curValue: string, rect: DOMRect) => void;
+        pattern: Pattern<any>;
+        onClick: (curTick: number, curPattern: Pattern<any>, rect: DOMRect) => void;
     };
 }
 
-const PatternEventNode: React.FC<PatternEventNodeProps> = ({ id, data }) => {
-    const { tick, value, onClick } = data;
+const PatternNode: React.FC<PatternNodeProps> = ({ id, data }) => {
+    const { tick, pattern, onClick } = data;
 
     const handleClick = (e: React.MouseEvent) => {
         const rect = e.currentTarget.getBoundingClientRect();
-        onClick(tick, value, rect);
+        onClick(tick, pattern, rect);
     }
 
     return (
@@ -39,10 +40,10 @@ const PatternEventNode: React.FC<PatternEventNodeProps> = ({ id, data }) => {
                 <label>Tick: {tick}</label>
             </div>
             <div>
-                <label>Value: {value}</label>
+                <label>Pattern: {pattern.name}</label>
             </div>
         </div>
     );
 };
 
-export default PatternEventNode;
+export default PatternNode;
