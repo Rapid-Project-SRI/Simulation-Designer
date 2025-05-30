@@ -16,16 +16,11 @@ const CombinerNode: React.FC<NodeProps> = observer(({ data }) => {
         <div>
           <h3 className="text-node-orange-dark font-semibold text-lg"> {nodeData?.label}</h3>
           <p>Type: {nodeData?.dataType}</p>
-          <p>Description: {nodeData?.description|| "undefined"}</p>
+          <p>Mode: {nodeData?.mode}</p>
+          <p>Variable: {nodeData?.variableName}</p>
         </div>
       </div>
       <Handle type="source" position={Position.Right}/>
-      {/* <strong>Combiner Node</strong>
-      <div>{nodeData?.label}</div>
-      <div>id: {nodeData?.id}</div>
-      <div>Merge Mode: {nodeData?.mode}</div>
-      <div style={{ marginBottom: 5 }}>Output Variable: {nodeData?.variableName}</div> */}
-      {/* <div style={{ fontSize: '0.8em', color: '#666' }}>Type: {nodeData?.dataType}</div> */}
     </div>
   );
 });

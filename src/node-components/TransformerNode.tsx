@@ -7,8 +7,6 @@ import { NodeProps } from './NodeTypes';
 const TransformerNode: React.FC<NodeProps> = observer(({ data }) => {
   // Retrieve the saved expression from your store.
   const nodeData = flowStore.nodes.find((n) => n.id === data.nodeId);
-  // Use a separate state for the draft expression.
-  const [draftExpression, setDraftExpression] = React.useState<string>(nodeData?.expression || '');
 
   return (
     <div className='node-container bg-node-green-light'>
@@ -19,13 +17,10 @@ const TransformerNode: React.FC<NodeProps> = observer(({ data }) => {
         <div>
           <h3 className="text-node-green-dark font-semibold text-lg">{nodeData?.label}</h3>
           <p>Type: {nodeData?.dataType}</p>
-          <p>Description: {nodeData?.description|| "undefined"}</p>
+          <p>Variable: {nodeData?.variableName}</p>
         </div>
       </div>
       <Handle type="source" position={Position.Right} style={{ background: '#555' }} />
-
-      {/* <div style={{ fontSize: '0.8em', color: '#666' }}>Type: {nodeData?.dataType}</div>
-      <div style={{ marginBottom: 5 }}>Output Variable: {nodeData?.variableName}</div> */}
     </div>
   );
 });

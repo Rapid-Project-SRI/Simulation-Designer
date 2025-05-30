@@ -17,7 +17,7 @@ const VariableNode: React.FC<NodeProps> = observer(({ data }) => {
         <div>
           <h3 className="text-node-blue-dark font-semibold text-lg">{nodeData?.label}</h3>
           <p>Type: {nodeData?.dataType}</p>
-          <p>Description: {nodeData?.description|| "undefined"}</p>
+          <p>Variable: {nodeData?.variableName}</p>
         </div>
       </div>
       <Handle type="source" position={Position.Right} />

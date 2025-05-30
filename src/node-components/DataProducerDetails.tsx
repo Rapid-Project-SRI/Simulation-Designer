@@ -90,14 +90,7 @@ const DataProducerDetails: React.FC<NodeDetailProps> = observer(({ node }) => {
 
     return (
         <div className="grid gap-4">
-
-            {/* Data Type */}
-            <div>
-                <div className="form-label">Data Type</div>
-                <p className="form-input bg-node-yellow-light">{node.dataType}</p>
-            </div>
-
-            {/* Collapsible Pattern Editor */}
+      {/* Collapsible Pattern Editor */}
             <div>
                 <div className="form-input bg-node-yellow-light form-label flex justify-between items-center">
                     <span>Pattern</span>

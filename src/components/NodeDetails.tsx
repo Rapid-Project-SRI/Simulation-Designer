@@ -34,7 +34,8 @@ const NodeDetails = observer(() => {
     };
 
     const DetailComponent = nodeMap[node.type][0];
-    const showDataType = node.type === 'variableNode' || node.type === 'eventNode' || node.type === 'dataProducerNode';
+    const showDataType = node.type === 'variableNode' || node.type === 'transformerNode' ||
+                         node.type === 'dataProducerNode' || node.type === 'combinerNode' || node.type === 'outputNode';
 
     const renderOutputVariableField = () => {
         if (node.type !== 'combinerNode' && node.type !== 'dataProducerNode') return null;

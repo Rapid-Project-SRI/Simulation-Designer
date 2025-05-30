@@ -23,16 +23,12 @@ const DataProducerNode: React.FC<NodeProps> = observer(({ data }) => {
                 <div>
                 <h3 className="text-node-yellow-dark font-semibold text-lg">{nodeData?.label}</h3>
                 <p>Type: {nodeData?.dataType}</p>
-                <p>Description: {nodeData?.description|| "undefined"}</p>
+                <p>Variable: {nodeData?.variableName}</p>
                 </div>
             </div>
             {/* Input handle for marking as Event-Activated */}
             {/* Output handle for connecting to downstream nodes */}
             <Handle type="source" position={Position.Right} style={{ background: '#555' }} />
-            {/* <div style={{ color: '#21618c' }}>{nodeData?.label}</div>
-            <div style={{ fontSize: '0.8em', color: '#666' }}>Type: {nodeData?.dataType}</div>
-            <div>id: {nodeData?.id}</div>
-            <div style={{ fontSize: '0.8em', color: '#666' }}>Output Variable: {nodeData?.variableName}</div> */}
         </div>
     );
 });
