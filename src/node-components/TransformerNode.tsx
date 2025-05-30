@@ -9,7 +9,7 @@ const TransformerNode: React.FC<NodeProps> = observer(({ data }) => {
   const nodeData = flowStore.nodes.find((n) => n.id === data.nodeId);
 
   return (
-    <div className='node-container bg-node-green-light'>
+    <div className='node-container bg-node-green-light border-1 border-node-green-dark'>
       <Handle type="target" position={Position.Left} style={{ background: '#555' }} />
       <div
         className="flex p-2">

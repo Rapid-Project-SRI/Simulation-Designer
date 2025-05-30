@@ -8,7 +8,7 @@ const CombinerNode: React.FC<NodeProps> = observer(({ data }) => {
   const nodeData: FlowNode = flowStore.nodes.find((n) => n.id === data.nodeId)!;
 
   return (
-    <div className='node-container bg-node-orange-light'>
+    <div className='node-container bg-node-orange-light border-1 border-node-orange-dark'>
       <Handle type="target" position={Position.Left} />
       <div
         className="flex p-2">

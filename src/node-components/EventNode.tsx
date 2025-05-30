@@ -9,7 +9,7 @@ const EventNode: React.FC<NodeProps> = observer(({ data }) => {
   const nodeData = flowStore.nodes.find((n) => n.id === data.nodeId);
 
   return (
-    <div className='node-container bg-node-purple-light'>
+    <div className='node-container bg-node-purple-light border-1 border-node-purple-dark'>
       <Handle type="source" position={Position.Right} />
       <div
         className="flex p-2">

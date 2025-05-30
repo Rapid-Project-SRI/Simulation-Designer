@@ -15,7 +15,7 @@ const DataProducerNode: React.FC<NodeProps> = observer(({ data }) => {
     const defaultPattern = [{ data: getDefaultValueForType(nodeData?.dataType || DataType.NUMBER), delayTicks: 60 }];
 
     return (
-        <div className='node-container bg-node-yellow-light'>
+        <div className='node-container bg-node-yellow-light border-1 border-node-yellow-dark'>
             <Handle type="target" position={Position.Left} style={{ background: '#555' }} />
             <div
                 className="flex p-2">

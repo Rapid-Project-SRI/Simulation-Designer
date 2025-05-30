@@ -9,7 +9,7 @@ const VariableNode: React.FC<NodeProps> = observer(({ data }) => {
   const nodeData = flowStore.nodes.find((n) => n.id === data.nodeId);
 
   return (
-    <div className='node-container bg-node-blue-light'>
+    <div className='node-container bg-node-blue-light border-1 border-node-blue-dark'>
       <Handle type="target" position={Position.Left} />
       <div
         className="flex p-2">

@@ -9,7 +9,7 @@ const OutputNode: React.FC<NodeProps> = observer(({ data }) => {
   const nodeData = flowStore.nodes.find((n) => n.id === data.nodeId);
 
   return (
-    <div className='node-container bg-node-gray-light'>
+    <div className='node-container bg-node-gray-light border-1 border-node-gray-dark'>
       <Handle type="target" position={Position.Left} />
       {/* <div style={{ color: '#21618c' }}>{nodeData?.label}</div>
       <div>id: {nodeData?.id}</div> */}
