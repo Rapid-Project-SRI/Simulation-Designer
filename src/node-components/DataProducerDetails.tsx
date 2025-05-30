@@ -131,7 +131,7 @@ const DataProducerDetails: React.FC<NodeDetailProps> = observer(({ node }) => {
                             </div>
                         ))}
                         <button onClick={addRow} className="btn-primary" title="Add row">
-                            + Add a new Pattern
+                            + Add a new Row
                         </button>
                     </div>
                 )}
