@@ -9,18 +9,17 @@ const TransformerNode: React.FC<NodeProps> = observer(({ data }) => {
   const nodeData = flowStore.nodes.find((n) => n.id === data.nodeId);
 
   return (
-    <div className='node-container bg-node-green-light border-1 border-node-green-dark'>
-      <Handle type="target" position={Position.Left} style={{ background: '#555' }} />
-      <div
-        className="flex p-2">
+    <div className='node-container bg-node-green-light border-node-green-dark'>
+      <Handle type="target" position={Position.Left} />
+      <div className="flex p-2">
         <h3 className="node-letter text-node-green-dark">T</h3>
         <div>
-          <h3 className="text-node-green-dark font-semibold text-lg">{nodeData?.label}</h3>
+          <h3 className="node-label text-node-green-dark">{nodeData?.label}</h3>
           <p>Type: {nodeData?.dataType}</p>
           <p>Variable: {nodeData?.variableName}</p>
         </div>
       </div>
-      <Handle type="source" position={Position.Right} style={{ background: '#555' }} />
+      <Handle type="source" position={Position.Right}/>
     </div>
   );
 });

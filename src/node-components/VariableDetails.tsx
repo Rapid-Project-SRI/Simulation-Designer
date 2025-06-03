@@ -9,7 +9,7 @@ const VariableDetails: React.FC<NodeDetailProps> = observer(({ node }) => {
             <div className='form-label'>Output Variable</div>
             <input
                 value={node.variableName}
-                onChange={(e) => flowStore.updateNodeVariableName(node.id, e.target.value)}
+                onChange={(e) => flowStore.updateNodeVariableName(node.id, e.target.value)} // Update the variable name in the flow store
                 className='form-input bg-node-blue-light'
             />
         </>

@@ -1,5 +1,4 @@
 import { FlowNode } from "../FlowStore";
-import { Node as ReactFlowNode } from '@xyflow/react';
 
 // Custom node data structure
 export type NodeData = {

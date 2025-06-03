@@ -1,5 +1,6 @@
 import { DataType } from './FlowStore';
 
+// Utility function to get the default value for a given data type
 export const getDefaultValueForType = (type: DataType): any => {
     switch (type) {
         case DataType.NUMBER:

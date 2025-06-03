@@ -212,6 +212,8 @@ const FlowCanvas = observer(() => {
         flowStore.saveHistory();
     };
 
+    // Add Variable Node
+    // Variable nodes are used to store data that can be used in transformations or outputs.
     const addVariableNode = (position: XYPosition, dataType: DataType) => {
         const id = flowStore.generateNodeId();
         const variableName = `var_${id}`;
@@ -227,6 +229,8 @@ const FlowCanvas = observer(() => {
         });
     };
 
+    // Add Transformer Node
+    // Transformer nodes are used to apply transformations to data.
     const addTransformerNode = (position: XYPosition, dataType: DataType) => {
         const id = flowStore.generateNodeId();
         flowStore.addNode({
@@ -241,6 +245,8 @@ const FlowCanvas = observer(() => {
         });
     };
 
+    // Add Data Producer Node
+    // Data Producer nodes are used to generate data based on a pattern.
     const addDataProducerNode = (position: XYPosition, dataType: DataType) => {
         const id = flowStore.generateNodeId();
         flowStore.addNode({
@@ -258,6 +264,8 @@ const FlowCanvas = observer(() => {
         });
     };
 
+    // Add Combiner Node
+    // Combiner nodes are used to merge multiple inputs into a single output.
     const addCombinerNode = (position: XYPosition, dataType: DataType) => {
         const id = flowStore.generateNodeId();
         flowStore.addNode({
@@ -272,6 +280,8 @@ const FlowCanvas = observer(() => {
         });
     };
 
+    // Add Event Node
+    // Event nodes are used to trigger actions based on specific events.
     const addEventNode = (position: XYPosition, dataType: DataType) => {
         const id = flowStore.generateNodeId();
         flowStore.addNode({
@@ -284,6 +294,8 @@ const FlowCanvas = observer(() => {
         });
     };
 
+    // Add Output Node
+    // Output nodes are used to send data to socket.io.
     const addOutputNode = (position: XYPosition, dataType: DataType) => {
         const id = flowStore.generateNodeId();
         flowStore.addNode({
@@ -296,12 +308,6 @@ const FlowCanvas = observer(() => {
             variableName: `output_${id}`
         });
     };
-
-    // const addBranchNode = (position: XYPosition, dataType: DataType) => {
-    //     const id = flowStore.generateNodeId();
-    //     const variableName = `branch_${id}`;
-    //     flowStore.addNode({ id, type: 'branchNode', label: variableName, variableName, position, dataType });
-    // };
 
     return (
         <div className="flex flex-col h-full">
@@ -360,7 +366,7 @@ const FlowCanvas = observer(() => {
                     ref={fileInputRef}
                     accept=".json"
                     onChange={onJsonFileChange}
-                    style={{ display: 'none' }}
+                    style={{ display: 'none' }} // Hide the file input
                 />
             </div>
         </div>

@@ -62,6 +62,7 @@ export interface FlowEdge {
 }
 
 export class FlowStore {
+    // Observable state
     nodes: FlowNode[] = [];
     edges: FlowEdge[] = [];
     selectedNodeIds: string[] = [];
@@ -78,6 +79,7 @@ export class FlowStore {
         makeAutoObservable(this);
     }
 
+    // Add a new node with a unique ID and default values
     addNode(node: FlowNode) {
         // Ensure description is initialized
         const nodeWithDescription = {
@@ -88,27 +90,23 @@ export class FlowStore {
         this.nodes.push(nodeWithDescription);
     }
 
+    // Add a new node with a unique ID and default values
     deleteNode(id: string) {
         console.log(id);
         this.nodes = this.nodes.filter((n) => n.id !== id);
     }
 
+    // Add an edge to the end of the edges array
     addEdge(edge: FlowEdge) {
-        const sourceNode = this.nodes.find(n => n.id === edge.source);
-        const targetNode = this.nodes.find(n => n.id === edge.target);
-
-        // if (sourceNode && targetNode && sourceNode.dataType !== targetNode.dataType) {
-        //     console.warn(`Type mismatch: Cannot connect ${sourceNode.dataType} to ${targetNode.dataType}`);
-        //     return;
-        // }
-
         this.edges.push(edge);
     }
 
+    // Delete an edge by its source and target IDs
     deleteEdge(sourceId: string, targetId: string) {
         this.edges = this.edges.filter((edge) => !(edge.source === sourceId && edge.target === targetId))
     }
 
+    // Set selected nodes by their IDs
     setSelectedNodes(ids: string[]) {
         this.selectedNodeIds = ids;
         this.nodes.forEach(node => {
@@ -116,14 +114,17 @@ export class FlowStore {
         });;
     }
 
+    // Generate a unique node ID
     generateNodeId(): string {
         return `node_${this.nextNodeId++}`;
     }
 
+    // Generate a unique edge ID
     generateEdgeId() {
         return `edge_${this.nextEdgeId++}`;
     }
 
+    // Update the calculation expression for transformer nodes
     updateCalcExpression(id: string, newExpr: string) {
         const node = this.nodes.find((n) => n.id === id);
         if (node?.type === 'transformerNode') {
@@ -131,6 +132,7 @@ export class FlowStore {
         }
     }
 
+    // Update the pattern for data producer nodes
     updateNodePattern(id: string, newPattern: PatternItem<any>[]) {
         const node = this.nodes.find((n) => n.id === id);
         if (node && node.type === 'dataProducerNode') {
@@ -159,6 +161,7 @@ export class FlowStore {
         }
     }
 
+    // Update the position of a node
     updateNodePosition(id: string, position: XYPosition) {
         const node = this.nodes.find((n) => n.id === id);
         if (node) {
@@ -166,6 +169,7 @@ export class FlowStore {
         }
     }
 
+    // Update the start and end ticks for data producer nodes
     updateNodeTime(id: string, startTick: number, endTick: number) {
         const node = this.nodes.find((n) => n.id === id);
         if (node) {
@@ -174,6 +178,7 @@ export class FlowStore {
         }
     }
 
+    // Update the repeat status for data producer nodes
     updateNodeRepeat(id: string, repeat: boolean) {
         const node = this.nodes.find((n) => n.id === id);
         if (node && node.type === 'dataProducerNode') {
@@ -181,6 +186,7 @@ export class FlowStore {
         }
     }
 
+    // Update the variable name for variable nodes
     updateNodeVariableName(id: string, name: string) {
         const node = this.nodes.find((n) => n.id === id);
         console.log("udpateNodeVarName")
@@ -190,6 +196,7 @@ export class FlowStore {
         }
     }
 
+    // Update the initial value for variable nodes
     updateNodeInitialValue(id: string, value: any) {
         const node = this.nodes.find((n) => n.id === id);
         if (node && node.type === 'variableNode') {
@@ -197,6 +204,7 @@ export class FlowStore {
         }
     }
 
+    // Update the label of a node
     updateNodeLabel(id: string, label: string) {
         const node = this.nodes.find((n) => n.id === id);
         if (node) {
@@ -204,6 +212,7 @@ export class FlowStore {
         }
     }
 
+    // Update the data type of a node
     updateNodeDataType(id: string, dataType: DataType) {
         const node = this.nodes.find((n) => n.id === id);
         if (node) {
@@ -221,6 +230,7 @@ export class FlowStore {
         }
     }
 
+    // Update the combiner mode for combiner nodes
     updateCombinerMode(id: string, mode: 'merge' | 'zip' | 'combineLatest') {
         const node = this.nodes.find((n) => n.id === id);
         console.log(id, "changed to", mode)
@@ -229,6 +239,7 @@ export class FlowStore {
         }
     }
 
+    // Update the description of a node
     updateNodeDescription(id: string, description: string) {
         const node = this.nodes.find((n) => n.id === id);
         if (node) {
@@ -236,6 +247,7 @@ export class FlowStore {
         }
     }
 
+    // Update the default value for data producer nodes
     updateNodeDefaultValue(id: string, defaultValue: any) {
         const node = this.nodes.find((n) => n.id === id);
         if (node && node.type === 'dataProducerNode') {
@@ -255,10 +267,12 @@ export class FlowStore {
             });
     }
 
+    // Serialize the store to a JSON string
     serialize() {
         return JSON.stringify({ nodes: this.nodes, edges: this.edges });
     }
 
+    // Hydrate the store from a JSON string
     hydrate(json: string) {
         const data = JSON.parse(json);
         this.nodes = data.nodes || [];
@@ -270,26 +284,31 @@ export class FlowStore {
         this.nextNodeId = maxId + 1;
     }
 
+    // Get the next transformer index based on existing transformer nodes
     getTransformerIndex(): number {
         const transformerNodes = this.nodes.filter(n => n.type === 'transformerNode');
         return transformerNodes.length + 1;
     }
 
+    // Get the next data producer index based on existing data producer nodes
     getDataProducerIndex(): number {
         const dataProdNodes = this.nodes.filter(n => n.type === 'dataProducerNode');
         return dataProdNodes.length + 1;
     }
 
+    // Get the next combiner index based on existing combiner nodes
     getCombinerIndex(): number {
         const combinerNodes = this.nodes.filter(n => n.type === 'combinerNode');
         return combinerNodes.length + 1;
     }
 
+    // Get the next variable index based on existing variable nodes
     getVariableIndex(): number {
         const variableNodes = this.nodes.filter(n => n.type === 'variableNode');
         return variableNodes.length + 1;
     }
 
+    // Copy the selected nodes and edges to the clipboard
     copySelectedNodes() {
         const selectedNodes = this.nodes.filter(node => node.selected);
         const selectedNodeIds = selectedNodes.map(node => node.id);
@@ -306,6 +325,7 @@ export class FlowStore {
         console.log("Clipboard after copying:", this.clipboard); // Debug log 
     }
 
+    // Paste the copied nodes and edges into the flow
     pasteClipboard() {
         if (!this.clipboard || this.clipboard.nodes.length === 0) return;
 

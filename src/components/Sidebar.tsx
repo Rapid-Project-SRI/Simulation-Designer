@@ -9,67 +9,60 @@ function SideBar() {
   };
 
   return (
-    // <aside style={{ padding: 10, background: '#f7f7f7', height: '100%', borderRight: '1px solid #ddd' }}>
-    <div className='p-2 flex flex-col min-w-full bg-bg-primary gap-4'>
+    <div className='sidebar-container'>
       <h1 className='bg-blue'>Library</h1>
 
       {/* Blue Node */}
       <div onDragStart={(event) => onDragStart(event, 'variableNode')} draggable
-        className="flex p-4 min-w-full bg-node-blue-light rounded-app border-1 border-node-blue-dark">
-        <h3 className="node-letter text-node-blue-dark font-bold text-3xl mr-4">X</h3>
+        className="sidebar-node-container bg-node-blue-light border-node-blue-dark">
+        <h3 className="node-letter text-node-blue-dark">X</h3>
         <div>
-          <h3 className="text-node-blue-dark font-semibold text-lg">Variable Node</h3>
-          {/* <p className="text-node-blue-dark text-sm">Description</p> */}
+          <h3 className="node-label text-node-blue-dark">Variable Node</h3>
         </div>
       </div>
 
       {/* Green Node */}
       <div onDragStart={(event) => onDragStart(event, 'transformerNode')} draggable
-        className="flex p-4 bg-node-green-light rounded-app border-1 border-node-green-dark">
-        <h3 className="node-letter text-node-green-dark font-bold text-3xl mr-4">T</h3>
+        className="sidebar-node-container bg-node-green-light border-node-green-dark">
+        <h3 className="node-letter text-node-green-dark">T</h3>
         <div>
-          <h3 className="text-node-green-dark font-semibold text-lg">Transformer Node</h3>
-          {/* <p className="text-node-green-dark text-sm">Description</p> */}
+          <h3 className="node-label text-node-green-dark">Transformer Node</h3>
         </div>
       </div>
 
       {/* Yellow Node */}
       <div onDragStart={(event) => onDragStart(event, 'dataProducerNode')} draggable
-        className="flex p-4 bg-node-yellow-light rounded-app border-1 border-node-yellow-dark">
-        <h3 className="node-letter text-node-yellow-dark font-bold text-3xl mr-4">D</h3>
+        className="sidebar-node-container bg-node-yellow-light border-node-yellow-dark">
+        <h3 className="node-letter text-node-yellow-dark">D</h3>
         <div>
-          <h3 className="text-node-yellow-dark font-semibold text-lg">Data Producer Node</h3>
-          {/* <p className="text-node-yellow-dark text-sm">Description</p> */}
+          <h3 className="node-label text-node-yellow-dark">Data Producer Node</h3>
         </div>
       </div>
 
       {/* Orange Node */}
       <div onDragStart={(event) => onDragStart(event, 'combinerNode')} draggable
-        className="flex p-4 bg-node-orange-light rounded-app border-1 border-node-orange-dark">
-        <h3 className="node-letter text-node-orange-dark font-bold text-3xl mr-4">C</h3>
+        className="sidebar-node-container bg-node-orange-light border-node-orange-dark">
+        <h3 className="node-letter text-node-orange-dark">C</h3>
         <div>
-          <h3 className="text-node-orange-dark font-semibold text-lg">Combiner Node</h3>
-          {/* <p className="text-node-orange-dark text-sm">Description</p> */}
+          <h3 className="node-label text-node-orange-dark ">Combiner Node</h3>
         </div>
       </div>
 
       {/* Purple Node */}
       <div onDragStart={(event) => onDragStart(event, 'eventNode')} draggable
-        className="flex p-4 bg-node-purple-light rounded-app border-1 border-node-purple-dark">
-        <h3 className="node-letter text-node-purple-dark font-bold text-3xl mr-4">E</h3>
+        className="sidebar-node-container bg-node-purple-light border-node-purple-dark">
+        <h3 className="node-letter text-node-purple-dark">E</h3>
         <div>
-          <h3 className="text-node-purple-dark font-semibold text-lg">Event Node</h3>
-          {/* <p className="text-node-purple-dark text-sm">Description</p> */}
+          <h3 className="node-label text-node-purple-dark">Event Node</h3>
         </div>
       </div>
 
       {/* Gray Node */}
       <div onDragStart={(event) => onDragStart(event, 'outputNode')} draggable 
-        className="flex p-4 bg-node-gray-light rounded-app border-1 border-node-gray-dark">
-        <h3 className="node-letter text-node-gray-dark font-bold text-3xl mr-4">O</h3>
+        className="sidebar-node-container bg-node-gray-light border-node-gray-dark">
+        <h3 className="node-letter text-node-gray-dark">O</h3>
         <div>
-          <h3 className="text-node-gray-dark font-semibold text-lg">Output Node</h3>
-          {/* <p className="text-node-gray-dark text-sm">Description</p> */}
+          <h3 className="node-label text-node-gray-dark">Output Node</h3>
         </div>
       </div>
     </div>
