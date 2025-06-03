@@ -8,11 +8,10 @@ import CombinerNode from './node-components/CombinerNode';
 import { CombineMode } from './node-components/NodeTypes';
 import EventNode from './node-components/EventNode';
 import OutputNode from './node-components/OutputNode';
-import BranchNode from './node-components/BranchNode';
 
 export type FlowNodeType =
     'variableNode' | 'transformerNode' | 'dataProducerNode' |
-    'combinerNode' | 'eventNode' | 'outputNode' | 'branchNode';
+    'combinerNode' | 'eventNode' | 'outputNode';
 
 export enum DataType {
     NUMBER = 'number',
@@ -28,7 +27,6 @@ export const nodeTypes = {
     combinerNode: CombinerNode,
     eventNode: EventNode,
     outputNode: OutputNode,
-    branchNode: BranchNode
 };
 
 export interface FlowNode {

@@ -19,7 +19,7 @@ function SideBar() {
         <h3 className="node-letter text-node-blue-dark font-bold text-3xl mr-4">X</h3>
         <div>
           <h3 className="text-node-blue-dark font-semibold text-lg">Variable Node</h3>
-          <p className="text-node-blue-dark text-sm">Description</p>
+          {/* <p className="text-node-blue-dark text-sm">Description</p> */}
         </div>
       </div>
 
@@ -29,7 +29,7 @@ function SideBar() {
         <h3 className="node-letter text-node-green-dark font-bold text-3xl mr-4">T</h3>
         <div>
           <h3 className="text-node-green-dark font-semibold text-lg">Transformer Node</h3>
-          <p className="text-node-green-dark text-sm">Description</p>
+          {/* <p className="text-node-green-dark text-sm">Description</p> */}
         </div>
       </div>
 
@@ -39,7 +39,7 @@ function SideBar() {
         <h3 className="node-letter text-node-yellow-dark font-bold text-3xl mr-4">D</h3>
         <div>
           <h3 className="text-node-yellow-dark font-semibold text-lg">Data Producer Node</h3>
-          <p className="text-node-yellow-dark text-sm">Description</p>
+          {/* <p className="text-node-yellow-dark text-sm">Description</p> */}
         </div>
       </div>
 
@@ -49,7 +49,7 @@ function SideBar() {
         <h3 className="node-letter text-node-orange-dark font-bold text-3xl mr-4">C</h3>
         <div>
           <h3 className="text-node-orange-dark font-semibold text-lg">Combiner Node</h3>
-          <p className="text-node-orange-dark text-sm">Description</p>
+          {/* <p className="text-node-orange-dark text-sm">Description</p> */}
         </div>
       </div>
 
@@ -59,7 +59,7 @@ function SideBar() {
         <h3 className="node-letter text-node-purple-dark font-bold text-3xl mr-4">E</h3>
         <div>
           <h3 className="text-node-purple-dark font-semibold text-lg">Event Node</h3>
-          <p className="text-node-purple-dark text-sm">Description</p>
+          {/* <p className="text-node-purple-dark text-sm">Description</p> */}
         </div>
       </div>
 
@@ -69,7 +69,7 @@ function SideBar() {
         <h3 className="node-letter text-node-gray-dark font-bold text-3xl mr-4">O</h3>
         <div>
           <h3 className="text-node-gray-dark font-semibold text-lg">Output Node</h3>
-          <p className="text-node-gray-dark text-sm">Description</p>
+          {/* <p className="text-node-gray-dark text-sm">Description</p> */}
         </div>
       </div>
     </div>

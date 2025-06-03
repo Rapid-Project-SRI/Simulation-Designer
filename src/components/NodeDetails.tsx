@@ -8,7 +8,6 @@ import DataProducerDetails from '../node-components/DataProducerDetails';
 import CombinerDetails from '../node-components/CombinerDetails';
 import EventDetails from '../node-components/EventDetails'
 import OutputDetails from '../node-components/OutputDetails';
-import BranchDetails from '../node-components/BranchDetails'
 
 const nodeMap: Record<FlowNodeType, [React.FC<NodeDetailProps>, string, string, string]> = {
     transformerNode: [TransformerDetails, "Transformer Node", "T", "-node-green-"],
@@ -17,7 +16,6 @@ const nodeMap: Record<FlowNodeType, [React.FC<NodeDetailProps>, string, string, 
     combinerNode: [CombinerDetails, "Combiner Node", "C", "-node-orange-"],
     eventNode: [EventDetails, "Event Node", "E", "-node-purple-"],
     outputNode: [OutputDetails, "Output Node", "O", "-node-gray-"],
-    branchNode: [BranchDetails, "Branch Node", "B", "-node-red-"]
 };
 
 
